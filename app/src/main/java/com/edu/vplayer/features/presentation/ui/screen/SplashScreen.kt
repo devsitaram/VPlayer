@@ -14,7 +14,7 @@ import com.edu.vplayer.R
 @Composable
 fun SplashViewScreen(navHostController: NavHostController, getUserDevice: String?) {
     LaunchedEffect(key1 = true) {
-        Log.e("getUserDevice", "$getUserDevice")
+        Log.e("getUserDevice", "getUserDevice : $getUserDevice")
         if (getUserDevice == null || getUserDevice != "this") {
             navHostController.navigate(ScreenList.LoginScreen.route)
         } else {
