@@ -2,7 +2,11 @@ package com.edu.vplayer.features.presentation.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.OutlinedTextField
@@ -29,6 +33,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -41,7 +46,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.edu.vplayer.R
 
 @Composable
 fun TextView(
@@ -91,7 +98,7 @@ fun ButtonView(
     modifier: Modifier = Modifier,
     btnColor: ButtonColors,
     text: String,
-    textStyle: TextStyle
+    textStyle: TextStyle,
 ) {
     Button(
         onClick = { onClick() },
@@ -99,6 +106,32 @@ fun ButtonView(
         colors = btnColor
     ) {
         TextView(text = text, style = textStyle, modifier = Modifier)
+    }
+}
+
+// material button 3
+@Composable
+fun IconButtonView(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    btnColor: ButtonColors,
+    text: String,
+    textStyle: TextStyle,
+    painter: Painter
+) {
+    Button(
+        onClick = { onClick() },
+        modifier = modifier,
+        colors = btnColor
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            PainterImageView(
+                painter = painter, modifier = Modifier
+                    .height(20.dp)
+                    .width(20.dp)
+            )
+            TextView(text = text, style = textStyle, modifier = Modifier)
+        }
     }
 }
 

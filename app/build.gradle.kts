@@ -69,15 +69,67 @@ dependencies {
 
     // navigation compose
     implementation("androidx.compose.material:material:1.5.0")
-    implementation ("androidx.navigation:navigation-compose:2.7.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     // ViewModel and LiveData for Compose
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     //Add material 3
     implementation("androidx.compose.material3:material3")
     // defaults icons
-    implementation ("androidx.compose.material:material-icons-extended-android:1.6.0-alpha03")
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.0-alpha03")
 
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.1")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
+
+    // activity
+    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("androidx.activity:activity-compose:1.7.2")
+// Lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-common:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+//compose
+    implementation("androidx.compose.ui:ui:1.6.0-alpha05")
+    implementation("androidx.compose.material:material:1.6.0-alpha05")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.0-alpha05")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.0-alpha05")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0-alpha05")
+//compose navigation
+    implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+// \\\Dagger hilt
+    implementation("com.google.dagger:hilt-android:2.45")
+//   kapt ("com.google.dagger:hilt-compiler:2.45")
+// Networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+// Moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+//  kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.14.0'
+// Coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+// Room and room pagination
+    implementation("androidx.room:room-runtime:2.5.2")
+//    kapt ("androidx.room:room-compiler:2.5.1")
+    implementation("androidx.room:room-ktx:2.5.2")
+    implementation("androidx.room:room-paging:2.5.2")
+// coil image loading
+    implementation("io.coil-kt:coil-compose:2.4.0")
+// multidex
+    implementation("androidx.multidex:multidex:2.0.1")
+
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.0-alpha05")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.0-alpha05")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.0-alpha05")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
 }
