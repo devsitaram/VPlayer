@@ -1,8 +1,9 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -107,7 +108,7 @@ dependencies {
 
     // Dagger hilt
     implementation ("com.google.dagger:hilt-android:2.45")
-//    kapt ("com.google.dagger:hilt-compiler:2.45")
+    kapt ("com.google.dagger:hilt-compiler:2.45")
 
     // Networking
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
@@ -117,7 +118,8 @@ dependencies {
 
     // Moshi
     implementation ("com.squareup.moshi:moshi-kotlin:1.14.0")
-//    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.14.0'
+    //noinspection KaptUsageInsteadOfKsp
+    kapt ("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     // Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
@@ -125,7 +127,8 @@ dependencies {
 
     // Room and room pagination
     implementation ("androidx.room:room-runtime:2.5.2")
-//    kapt ("androidx.room:room-compiler:2.5.1")
+    //noinspection KaptUsageInsteadOfKsp
+    kapt ("androidx.room:room-compiler:2.5.2")
     implementation ("androidx.room:room-ktx:2.5.2")
     implementation ("androidx.room:room-paging:2.5.2")
 
@@ -142,4 +145,15 @@ dependencies {
     debugImplementation ("androidx.compose.ui:ui-tooling:1.6.0-alpha04")
     debugImplementation ("androidx.compose.ui:ui-test-manifest:1.6.0-alpha04")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+
+    // Dependency Injection
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-android-compiler:2.45")
+    implementation("androidx.hilt:hilt-work:1.0.0")
+    kapt( "androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // Google login
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
 }
