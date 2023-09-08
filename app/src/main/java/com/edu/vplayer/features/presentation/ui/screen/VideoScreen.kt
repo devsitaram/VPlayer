@@ -19,18 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.edu.vplayer.R
-import com.edu.vplayer.features.presentation.ui.components.ButtonView
 
 @Composable
 fun VideoViewScreen() {
-    ButtonView(
-        onClick = { /*TODO*/ },
-        modifier = Modifier,
-        btnColor = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.purple_500)
-        ),
-        text = "",
-        textStyle = TextStyle()
-    )
 
 }
