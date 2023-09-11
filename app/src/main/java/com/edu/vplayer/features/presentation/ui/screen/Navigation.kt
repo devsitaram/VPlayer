@@ -18,7 +18,7 @@ fun NavigationViewScreen(navHostController: NavHostController, getUserDevice: St
             LoginViewScreen(navHostController)
         }
         composable(ScreenList.SubjectScreen.route) {
-            SubjectViewScreen()
+            SubjectViewScreen(navHostController)
         }
         composable(ScreenList.VideoScreen.route) {
             VideoViewScreen()
