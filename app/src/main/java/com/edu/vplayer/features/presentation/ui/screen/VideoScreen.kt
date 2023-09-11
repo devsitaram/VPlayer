@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.net.Uri
-import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import android.widget.Space
-import android.widget.Toast
-import android.widget.VideoView
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,29 +16,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CastConnected
-import androidx.compose.material.icons.filled.ClosedCaptionOff
+import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Forward10
-import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.material.icons.filled.FullscreenExit
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PlayCircleOutline
@@ -48,18 +39,11 @@ import androidx.compose.material.icons.filled.RepeatOne
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -69,15 +53,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,11 +68,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.edu.vplayer.features.presentation.ui.components.TextView
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -116,7 +95,6 @@ fun VideoViewScreen(modifier: Modifier = Modifier) {
 
 // Create a single ExoPlayer instance for video playback
     val exoPlayer = remember {
-        Log.e("currentVideoUrl: ", "index: ->  $currentVideoUrl")
         ExoPlayer.Builder(context)
             .setSeekBackIncrementMs(10000L)
             .setSeekForwardIncrementMs(10000L)
@@ -183,19 +161,19 @@ fun VideoViewScreen(modifier: Modifier = Modifier) {
 
     // Fullscreen state
     var convertScreen by remember { mutableStateOf(false) }
-    val landScape: () -> Unit = {
+    val onConvertLandScape = {
         if (convertScreen) {
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            activity?.requestedOrientation =
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         } else {
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            activity?.requestedOrientation =
+                ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
-        convertScreen = !convertScreen
     }
 
     // setting
     var showSettingItem by remember { mutableStateOf(false) }
     var settingAction by remember { mutableStateOf(false) }
-
 
     LaunchedEffect(iconVisible, showSettingItem) {
         if (iconVisible) {
@@ -210,20 +188,17 @@ fun VideoViewScreen(modifier: Modifier = Modifier) {
 
     DisposableEffect(key1 = Unit) { onDispose { exoPlayer.release() } }
 
-    // snackBar show message
-    val snackBarHostState = remember { androidx.compose.material3.SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(275.dp),
+            .fillMaxWidth(),
+//            .height(275.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier//.height(275.dp)
+            modifier = Modifier
+                .height(275.dp)
                 .fillMaxWidth()
                 .background(Color.Black)
         ) {
@@ -233,113 +208,96 @@ fun VideoViewScreen(modifier: Modifier = Modifier) {
                         player = exoPlayer
                         useController = false // default icon buttons off
                         layoutParams = FrameLayout.LayoutParams(
-                            MATCH_PARENT, WRAP_CONTENT,
+                            MATCH_PARENT, MATCH_PARENT,
                         )
-//                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                     }
                 },
-                modifier = modifier
-                    .clickable {
-                        iconVisible = !iconVisible
-                    }
+                modifier = modifier.clickable { iconVisible = !iconVisible }
             )
 
-            // action icons visibility
-            if (iconVisible) {
-                Column(
-                    modifier = Modifier.height(275.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // top action icons
-                    TopIconsActionView(
-                        // settings
-                        onSettingClick = {
-                            settingAction = !settingAction
-                            showSettingItem = true
-                        },
-                    )
-                    // pause, stop, back, skip, replay
-                    CenterPlayActionView(
-                        // play and stop
-                        isPlaying = isPlayingVideo,
-                        onPlayAndPause = {
-                            isPlayingVideo = if (isPlayingVideo) {
-                                exoPlayer.pause()
-                                !isPlayingVideo
-                            } else {
-                                exoPlayer.play()
-                                !isPlayingVideo
-                            }
-                        },
-                        // back to previous
-                        onSkipPrevious = { },
-                        // next video play
-                        onSkipNext = { },
-                        // replay the same video
-                        onReplay = {
-                            exoPlayer.seekTo(0)
-                            exoPlayer.play()
-                            isPlayingVideo = true
-                        },
-                        playState = playbackState
-                    )
-                    // button slider landscape
-                    BottomIconsActionView(
-                        // landscape
-                        onConvertLandScape = {
-                            landScape()
-                            Toast.makeText(context, "$convertScreen", Toast.LENGTH_SHORT).show()
-                        },
-                        imageVector = if (convertScreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen
-                    )
-                }
-            }
+            CustomButtonIcons(
+                iconVisible = iconVisible,
+                exoPlayer = exoPlayer
+//                setPlaySpeed = { speed ->
+//                    exoPlayer.setPlaybackSpeed(speed as Float)
+//
+//                }
+            )
 
-            if (showSettingItem) {
-                Row(
-                    modifier = Modifier.height(275.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Spacer(modifier = Modifier.fillMaxWidth())
-                    SettingMenuItem(
-                        settingAction = settingAction,
-                        onSettingDismiss = { settingAction = false }
-                    )
-                }
-            }
+//            // action icons visibility
+//            if (iconVisible) {
+//                Column(
+//                    modifier = Modifier.height(275.dp),
+//                    verticalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    // top action icons
+//                    TopIconsActionView(
+//                        // settings
+//                        onSettingClick = {
+//                            settingAction = !settingAction
+//                            showSettingItem = true
+//                        },
+//                    )
+//                    // pause, stop, back, skip, replay
+//                    CenterPlayActionView(
+//                        // play and stop
+//                        isPlaying = isPlayingVideo,
+//                        onPlayAndPause = {
+//                            isPlayingVideo = if (isPlayingVideo) {
+//                                exoPlayer.pause()
+//                                !isPlayingVideo
+//                            } else {
+//                                exoPlayer.play()
+//                                !isPlayingVideo
+//                            }
+//                        },
+//                        // back to previous
+//                        onForward10 = { exoPlayer.seekBack() },
+//                        // next video play
+//                        onReplay10 = { exoPlayer.seekForward() },
+//                        // replay the same video
+//                        onReplay = {
+//                            exoPlayer.seekTo(0)
+//                            exoPlayer.play()
+//                            isPlayingVideo = true
+//                        },
+//                        playState = playbackState
+//                    )
+//                    // button landscape
+//                    BottomIconsActionView(
+//                        onConvertLandScape = {
+//                            convertScreen = !convertScreen
+//                            onConvertLandScape()
+//                        },
+//                        imageVector = if (convertScreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen
+//                    )
+//                }
+//            }
+//
+//            if (showSettingItem) {
+//                Row(
+//                    modifier = Modifier.height(275.dp),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Spacer(modifier = Modifier.fillMaxWidth())
+//                    SettingMenuItem(
+//                        settingAction = settingAction,
+//                        onSettingDismiss = { settingAction = false }
+//                    )
+//                }
+//            }
         }
     }
 }
 
-// top icon bar
-@Composable
-fun TopIconsActionView(
-    onSettingClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End
-    ) {
-        // setting icon
-        IconButton(onClick = { onSettingClick() }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(25.dp)
-            )
-        }
-    }
-}
 
 // pause and stop
 @Composable
 fun CenterPlayActionView(
     isPlaying: Boolean,
     onPlayAndPause: () -> Unit,
-    onSkipPrevious: () -> Unit,
-    onSkipNext: () -> Unit,
+    onForward10: () -> Unit,
+    onReplay10: () -> Unit,
     onReplay: () -> Unit,
     playState: Int
 ) {
@@ -351,7 +309,7 @@ fun CenterPlayActionView(
             modifier = Modifier.fillMaxWidth()
         ) {
             // back or Skip Previous
-            IconButton(onClick = { onSkipPrevious() }) {
+            IconButton(onClick = { onForward10() }) {
                 Icon(
                     imageVector = Icons.Default.Forward10,
                     contentDescription = "Forward 10 seconds",
@@ -370,8 +328,7 @@ fun CenterPlayActionView(
                 }
             ) {
                 Icon(
-                    imageVector =
-                    when {
+                    imageVector = when {
                         isPlaying -> {
                             Icons.Default.Pause
                         }
@@ -390,7 +347,7 @@ fun CenterPlayActionView(
                 )
             }
             // Skip Next video
-            IconButton(onClick = { onSkipNext() }) {
+            IconButton(onClick = { onReplay10() }) {
                 Icon(
                     imageVector = Icons.Default.Replay10,
                     contentDescription = "Replay 10 seconds",
@@ -539,54 +496,255 @@ fun MenusItemView(text: String, imageVector: ImageVector) {
 }
 
 @Composable
-fun SimpleSnackBarView() {
-    val snackBarHostState = remember { androidx.compose.material3.SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackBarHostState) },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = {
-                    scope.launch {
-                        snackBarHostState.showSnackbar(
-                            "SnackBar"
-                        )
-                    }
-                }
-            ) {
-                Text("Show snackBar")
-            }
-        },
-        content = { innerPadding ->
-            Text(
-                text = "Body content",
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .wrapContentSize()
+fun CustomButtonIcons(iconVisible: Boolean, exoPlayer: ExoPlayer) {
+
+    // setting
+    var expandedSetting by remember { mutableStateOf(false) }
+    // speed
+    var plackSpeedExpanded by remember { mutableStateOf(false) }
+    // audio
+    var audioExpanded by remember { mutableStateOf(false) }
+
+    AnimatedVisibility(
+        visible = if (expandedSetting) true else if (plackSpeedExpanded || audioExpanded) true else iconVisible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Column(
+            modifier = Modifier.height(275.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            TopIconsActionView(
+                expandedSetting = expandedSetting,
+                onExpandedSetting = { expandedSetting = true },
+                onDismissDropdown = { expandedSetting = false },
+                plackSpeedExpanded = plackSpeedExpanded,
+                onSpeedMenuShow = { plackSpeedExpanded = true },
+                onSpeedDismiss = { plackSpeedExpanded = false },
+                setPlaySpeed = { speed ->
+                    exoPlayer.setPlaybackSpeed(speed as Float)
+                },
+                audioExpanded = audioExpanded,
+                onAudioMenuShow = { audioExpanded = true },
+                onAudioDismiss = { audioExpanded = false },
             )
         }
-    )
+    }
 }
 
+// top icon bar
 @Composable
-fun CustomButtonIcons() {
-//    AnimatedVisibility(
-//        visible = isPlaying,
-//        enter = fadeIn(tween(200)),
-//        exit = fadeOut(tween(200))
-//    ) {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(Color.Black.copy(alpha = 0.5f)),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Icon(
-//                imageVector = Icons.Rounded.Pause,
-//                contentDescription = null,
-//                tint = Color.White
-//            )
-//        }
-//    }
+fun TopIconsActionView(
+    expandedSetting: Boolean,
+    onExpandedSetting: () -> Unit,
+    onDismissDropdown: () -> Unit,
+    plackSpeedExpanded: Boolean,
+    onSpeedMenuShow: () -> Unit,
+    onSpeedDismiss: () -> Unit,
+    setPlaySpeed: (Any?) -> Unit,
+    audioExpanded: Boolean,
+    onAudioMenuShow: () -> Unit,
+    onAudioDismiss: () -> Unit,
+) {
+    val optionList = listOf(
+        ListOfSettingMenus.Speed,
+        ListOfSettingMenus.Audio,
+    )
+
+    val playbackSpeedOptions = listOf(0.25f, 0.5f, 0.75f, 1f, 1.25f, 1.5f, 1.75f, 2f)
+
+    val currentPlaybackSpeed by remember { mutableStateOf(playbackSpeedOptions) }
+
+    var speedIndex by remember { mutableIntStateOf(3) } // Set index to 3 to get the value 1f
+
+    var showsSpeed by remember { mutableFloatStateOf(playbackSpeedOptions[speedIndex]) }
+
+    LaunchedEffect(speedIndex) { showsSpeed = playbackSpeedOptions[speedIndex] }
+
+    // audio
+    val audioOptions = listOf("Auto", "Unknow")
+
+    var audioIndex by remember { mutableIntStateOf(0) }
+
+    var showsAudio by remember { mutableStateOf(audioOptions[audioIndex]) }
+
+    LaunchedEffect(audioIndex) { showsAudio = audioOptions[audioIndex] }
+
+    // top action icons
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black),
+        horizontalArrangement = Arrangement.End
+    ) {
+        // setting icon button
+        IconButton(modifier = Modifier
+            .size(32.dp, 32.dp)
+            .padding(end = 8.dp, top = 12.dp),
+            onClick = { onExpandedSetting() }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(25.dp)
+            )
+        }
+
+        // Dropdown menu for selecting playback speed options
+        if (expandedSetting) {
+            Box(modifier = Modifier) {
+                DropdownMenu(
+                    modifier = Modifier.background(color = Color.Black),
+                    expanded = expandedSetting,
+                    onDismissRequest = { onDismissDropdown() }
+                ) {
+                    optionList.forEach { option ->
+                        DropdownMenuItem(
+                            onClick = {
+                                onDismissDropdown()
+                                when (option.name) {
+                                    "Speed" -> {
+                                        onSpeedMenuShow()
+                                    }
+                                    else -> {
+                                        onAudioMenuShow()
+                                    }
+                                }
+                            }
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(
+                                    modifier = Modifier.size(width = 24.dp, height = 24.dp),
+                                    onClick = { }
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.fillMaxSize(),
+                                        imageVector = option.icon,
+                                        contentDescription = null,
+                                        tint = Color.White
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier,
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    TextView(
+                                        text = option.name,
+                                        color = Color.White,
+                                        fontSize = 13.sp,
+                                        style = TextStyle(lineHeight = 20.sp),
+                                        modifier = Modifier.padding(start = 8.dp)
+                                    )
+                                    when (option.name) {
+                                        "Speed" -> TextView(
+                                            text = if (showsSpeed == 1.0f) "Normal" else showsSpeed.toString() + "x",
+                                            color = Color.White,
+                                            fontSize = 10.sp,
+                                            modifier = Modifier.padding(start = 8.dp)
+                                        )
+
+                                        "Audio" -> TextView(
+                                            text = showsAudio,
+                                            color = Color.White,
+                                            fontSize = 10.sp,
+                                            modifier = Modifier.padding(start = 8.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //playback speed menu items
+        if (plackSpeedExpanded) {
+            Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
+                DropdownMenu(
+                    modifier = Modifier.background(color = Color.Black),
+                    expanded = plackSpeedExpanded,
+                    onDismissRequest = { onSpeedDismiss() } // plackSpeedExpanded = false
+                ) {
+                    currentPlaybackSpeed.forEachIndexed { index, speed ->
+                        DropdownMenuItem(
+                            onClick = {
+                                speedIndex = index // Set the selected index
+                                setPlaySpeed.invoke(speed)
+                                onSpeedDismiss()
+                            }
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                if (speedIndex == index) {
+                                    Icon(
+                                        modifier = Modifier,
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = "write",
+                                        tint = Color.White
+                                    )
+                                }
+                                TextView(
+                                    text = if (speed == 1.0f) "Normal" else speed.toString() + "x",
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // show video quality menu items
+        if (audioExpanded) {
+            Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
+                DropdownMenu(
+                    modifier = Modifier.background(color = Color.Black),
+                    expanded = audioExpanded,
+                    onDismissRequest = { onAudioDismiss() } // audioExpanded = false
+                ) {
+                    audioOptions.forEachIndexed { index, quality ->
+                        DropdownMenuItem(
+                            onClick = {
+                                audioIndex = index // Set the selected index
+                                onAudioDismiss()
+//                                audioExpanded = false
+                            }
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                if (audioIndex == index) {
+                                    Icon(
+                                        modifier = Modifier,
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = "write",
+                                        tint = Color.White
+                                    )
+                                }
+                                TextView(
+                                    text = quality,
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+open class ListOfSettingMenus(var icon: ImageVector, val name: String) {
+    object Speed : ListOfSettingMenus(Icons.Default.Settings, "Speed")
+    object Audio : ListOfSettingMenus(Icons.Default.Audiotrack, "Audio")
 }
