@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 fun NavigationViewScreen(navHostController: NavHostController, getUserDevice: String?) {
     NavHost(
         navController = navHostController,
-        startDestination = ScreenList.SplashScreen.route
+        startDestination = ScreenList.SubjectScreen.route
     ) {
         composable(ScreenList.SplashScreen.route) {
             SplashViewScreen(navHostController, getUserDevice)

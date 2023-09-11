@@ -1,168 +1,149 @@
-import androidx.compose.runtime.Composable
+package com.edu.vplayer.features.presentation.ui.screen
 
-//package com.edu.vplayer.features.presentation.ui.screen
-//
-//import android.content.Context
-//import android.util.Log
-//import androidx.compose.foundation.background
-//import androidx.compose.foundation.layout.Box
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.fillMaxHeight
-//import androidx.compose.foundation.layout.fillMaxSize
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.foundation.lazy.LazyColumn
-//import androidx.compose.material.Button
-//import androidx.compose.material.ExperimentalMaterialApi
-//import androidx.compose.material.Icon
-//import androidx.compose.material.Text
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.FilterAlt
-//import androidx.compose.material.rememberBottomSheetScaffoldState
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.rememberCoroutineScope
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.platform.LocalContext
-//import androidx.compose.ui.res.painterResource
-//import androidx.compose.ui.text.TextStyle
-//import androidx.compose.ui.text.font.FontWeight
-//import androidx.compose.ui.unit.dp
-//import androidx.compose.ui.unit.sp
-//import androidx.navigation.NavHostController
-//import com.edu.vplayer.features.presentation.ui.components.TextView
-//import kotlinx.coroutines.launch
-//
+import android.content.Context
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.edu.vplayer.R
+import com.edu.vplayer.features.presentation.ui.components.ContentCardView
+import com.edu.vplayer.features.presentation.ui.components.TextView
+import kotlinx.coroutines.launch
+
 @Composable
 fun SubjectViewScreen() {
-//
-//    val listOfSubject = mutableListOf<SubjectLists>()
-//    listOfSubject.add(
-//        SubjectLists(
-//            painter = painterResource(id = R.mipmap.img_10_economic),
-//            topic = "Grade 10: Economics",
-//            description = "Grade 10 syllabus: Economics",
-//        )
-//    )
-//    listOfSubject.add(
-//        SubjectLists(
-//            painter = painterResource(id = R.mipmap.img_11_non_science),
-//            topic = "Grade 11: Non-Science",
-//            description = "Grade 11 syllabus: Nepali, English, Social Studies, Mathematics, Business Studies, Accounts, Economics, Computer Science.",
-//        )
-//    )
-//    listOfSubject.add(
-//        SubjectLists(
-//            painter = painterResource(id = R.mipmap.img_11_science),
-//            topic = "Grade 11: Science",
-//            description = "Grade 11 syllabus: Nepali, English, Social Studies, Mathematics, Physics Chemistry, Biology, Computer Science.",
-//        )
-//    )
-//
-//    val context = LocalContext.current
-//    val scope = rememberCoroutineScope()
-//    val scaffoldState = rememberBottomSheetScaffoldState()
-//
-//    val onButtonClick: () -> Unit = {
-//        scope.launch {
-//            if (scaffoldState.bottomSheetState.isExpanded) {
-//                scaffoldState.bottomSheetState.collapse()
-//            } else {
-//                scaffoldState.bottomSheetState.expand()
-//            }
-//        }
-//    }
-//
-//    Column(modifier = Modifier.fillMaxWidth()) {
-////        BottomSheetScaffold(
-////            scaffoldState = scaffoldState,
-////            sheetPeekHeight = 0.dp,
-////            sheetShape = ShapeDefaults.ExtraLarge,
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .align(alignment = Alignment.CenterHorizontally),
-////            sheetContent = {
-////                Card(
-////                    modifier = Modifier
-////                        .fillMaxWidth()
-////                        .background(Color.LightGray)
-////                ) {
-////                    ButtonSheetField(onClickAction = { onButtonClick() })
-////                }
-////            }
-////        ) {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxHeight()
-//                .fillMaxWidth(),
-//        ) {
-//            // this is the screen
-//            Column(
-//                modifier = Modifier
-//                    .background(Color.White)
-//                    .fillMaxWidth()
-//                    .padding(start = 20.dp, end = 20.dp, bottom = 55.dp),
-//            ) {
-//                // contents
-//                TextView(
-//                    text = "Packages",
-//                    style = TextStyle(
-//                        fontSize = 15.sp,
-//                        color = Color.Gray,
-//                        fontWeight = FontWeight.SemiBold
-//                    ),
-//                    modifier = Modifier.padding(top = 20.dp, bottom = 15.dp)
-//                )
-//
-//                // column content
-//                LazyColumn {
-//                    items(listOfSubject) { item ->
-//                        ContentCardView(
-//                            painter = item.painter,
-//                            topic = item.topic,
-//                            description = item.description,
-//                            onClickable = {
+    val listOfSubject = mutableListOf<SubjectLists>()
+    listOfSubject.add(
+        SubjectLists(
+            painter = painterResource(id = R.mipmap.img_11_biology),
+            topic = "Grade 10: Biology",
+            description = "Grade 10 syllabus: Economics",
+        )
+    )
+    listOfSubject.add(
+        SubjectLists(
+            painter = painterResource(id = R.mipmap.img_11_chimestry),
+            topic = "Grade 11: Chemistry",
+            description = "Grade 11 syllabus: Chemistry, Social Studies, Mathematics, Business Studies, Accounts, Economics, Computer Science.",
+        )
+    )
+    listOfSubject.add(
+        SubjectLists(
+            painter = painterResource(id = R.mipmap.img_11_science),
+            topic = "Grade 11: Science",
+            description = "Grade 11 syllabus: Nepali, English, Social Studies, Mathematics, Physics Chemistry, Biology, Computer Science.",
+        )
+    )
+
+    val onButtonClick: () -> Unit = {
+       // navigate to video play screen
+    }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+        ) {
+            // this is the screen
+            Column(
+                modifier = Modifier
+                    .background(Color.White)
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, bottom = 55.dp),
+            ) {
+                // contents
+                TextView(
+                    text = "Packages",
+                    style = TextStyle(
+                        fontSize = 15.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(top = 20.dp, bottom = 15.dp)
+                )
+
+                // column content
+                LazyColumn {
+                    items(listOfSubject) { item ->
+                        ContentCardView(
+                            painter = item.painter,
+                            topic = item.topic,
+                            description = item.description,
+                            onClickable = {
 //                                val subject = SubjectDetail(topic = item.topic, description = item.description)
 //                                subjectDetailsViewModel.addSubjectDetails(newSubjectDetails = subject)
 //                                navController.navigate(MainScreenItems.SubjectDetails.route)
-//                            }
-//                        )
-//                    }
-//                }
-//            }
-//
-//            // filter button parent box
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(bottom = 70.dp)
-//                    .background(Color.Transparent),
-//                contentAlignment = Alignment.BottomCenter
-//            ) {
-//                // Action button
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .background(Color.Transparent), contentAlignment = Alignment.BottomEnd
-//                ) {
-//                    androidx.compose.material3.Button(
-//                        onClick = { onButtonClick() },
-//                        modifier = Modifier.padding(end = 10.dp)
-//                    ) {
-//                        Icon(
-//                            imageVector = Icons.Default.FilterAlt,
-//                            contentDescription = null,
-//                            tint = Color.White,
-//                            modifier = Modifier.padding(3.dp)
-//                        )
-//                        androidx.compose.material3.Text(text = "Filters", color = Color.White)
-//                    }
-//                }
-//            }
-//        }
-//    }
+                            }
+                        )
+                    }
+                }
+            }
+
+            // filter button parent box
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 70.dp)
+                    .background(Color.Transparent),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                // Action button
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Transparent), contentAlignment = Alignment.BottomEnd
+                ) {
+                    androidx.compose.material3.Button(
+                        onClick = { onButtonClick() },
+                        modifier = Modifier.padding(end = 10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FilterAlt,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.padding(3.dp)
+                        )
+                        androidx.compose.material3.Text(text = "Filters", color = Color.White)
+                    }
+                }
+            }
+        }
+    }
 }
+
+data class SubjectLists(
+    val painter: Painter,
+    val topic: String,
+    val description: String,
+)
+
 //
 //
 //
