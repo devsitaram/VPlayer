@@ -1,8 +1,17 @@
 package com.edu.vplayer.features.presentation.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.OutlinedTextField
@@ -11,8 +20,10 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Card
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.TextButton
@@ -41,7 +52,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.edu.vplayer.ui.theme.skyBlue
 
 @Composable
 fun TextView(
@@ -278,4 +291,90 @@ fun IconView(
         modifier = modifier,
         tint = tint
     )
+}
+
+@Composable
+fun ContentCardView(
+    painter: Painter,
+    topic: String,
+    description: String,
+    onClickable: () -> Unit = { }
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 15.dp)
+            .border(1.dp, Color.LightGray)
+            .clickable { onClickable() },
+        shape = ShapeDefaults.Medium
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(120.dp)
+                    .padding(start = 15.dp, end = 15.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, Color.LightGray),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                ) {
+                    TextView(
+                        text = topic, style = TextStyle(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        modifier = Modifier
+                    )
+                    TextView(
+                        text = description,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            lineHeight = 20.sp,
+                            color = Color.Gray
+                        ),
+                        modifier = Modifier.padding(top = 5.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.padding(top = 20.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Color.LightGray)
+                        .padding(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Newspaper,
+                        contentDescription = null,
+                        tint = skyBlue,
+                        modifier = Modifier.padding(start = 5.dp)
+                    )
+                    TextView(
+                        text = "View Package Detail", style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = skyBlue
+                        ),
+                        modifier = Modifier.padding(start = 5.dp)
+                    )
+                }
+            }
+        }
+    }
 }

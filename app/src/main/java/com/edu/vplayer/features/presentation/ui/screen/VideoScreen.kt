@@ -22,5 +22,6 @@ import com.edu.vplayer.R
 
 @Composable
 fun VideoViewScreen() {
+    // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 
 }
