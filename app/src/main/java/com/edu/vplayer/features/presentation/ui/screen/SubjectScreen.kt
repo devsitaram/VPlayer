@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.edu.vplayer.R
-import com.edu.vplayer.features.presentation.ViewModel.VideoDetails
+import com.edu.vplayer.features.domain.model.VideoDetails
 import com.edu.vplayer.features.presentation.ViewModel.VideoViewModel
 import com.edu.vplayer.features.presentation.ui.components.ContentCardView
 import com.edu.vplayer.features.presentation.ui.components.TextView
@@ -31,21 +31,21 @@ fun SubjectViewScreen(navHostController: NavHostController, videoViewModel: Vide
     listOfSubject.add(
         SubjectLists(
             painter = painterResource(id = R.mipmap.img_11_biology),
-            topic = "Grade 10: Biology",
+            title = "Grade 10: Biology",
             description = "Grade 10 syllabus: Economics",
         )
     )
     listOfSubject.add(
         SubjectLists(
             painter = painterResource(id = R.mipmap.img_11_chimestry),
-            topic = "Grade 11: Chemistry",
+            title = "Grade 11: Chemistry",
             description = "Grade 11 syllabus: Chemistry, Social Studies, Mathematics, Business Studies, Accounts, Economics, Computer Science.",
         )
     )
     listOfSubject.add(
         SubjectLists(
             painter = painterResource(id = R.mipmap.img_11_science),
-            topic = "Grade 11: Science",
+            title = "Grade 11: Science",
             description = "Grade 11 syllabus: Nepali, English, Social Studies, Mathematics, Physics Chemistry, Biology, Computer Science.",
         )
     )
@@ -79,10 +79,12 @@ fun SubjectViewScreen(navHostController: NavHostController, videoViewModel: Vide
                     items(listOfSubject) { item ->
                         ContentCardView(
                             painter = item.painter,
-                            topic = item.topic,
+                            topic = item.title,
                             description = item.description,
                             onClickable = {
-                                val videoDetails = VideoDetails(title = item.topic, videoUri = item.description)
+                                // data transfer and navigate
+                                val videoDetails = VideoDetails(title = item.title, descriptions = item.description,
+                                    videoUri = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4")
                                 videoViewModel.addVideoDetails(newVideoDetails = videoDetails)
                                 navHostController.navigate(ScreenList.VideoScreen.route)
                             }
@@ -96,7 +98,7 @@ fun SubjectViewScreen(navHostController: NavHostController, videoViewModel: Vide
 
 data class SubjectLists(
     val painter: Painter,
-    val topic: String,
+    val title: String,
     val description: String,
 )
 

@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,13 +19,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material3.Slider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Audiotrack
@@ -35,10 +43,10 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -56,15 +64,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import coil.compose.AsyncImage
 import com.edu.vplayer.features.presentation.ViewModel.VideoViewModel
 import com.edu.vplayer.features.presentation.ui.components.TextView
 import kotlinx.coroutines.delay
@@ -76,43 +87,44 @@ fun Media3Play() {
 }
 
 @Composable
-fun VideoViewScreen(modifier: VideoViewModel = viewModel()) {
+fun VideoViewScreen(viewModel: VideoViewModel = viewModel()) {
+
     val context = LocalContext.current
 
-    val videoUrls = mutableListOf(
-        "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-        // Add more video URLs here
-    )
+    val result = viewModel.videoDetails
+    var title = result?.title
+    var description  = result?.descriptions
+    var videoUrls= result?.videoUri
 
-    var currentVideoIndex by remember { mutableIntStateOf(0) }
-    val currentVideoUrl = Uri.parse(videoUrls[currentVideoIndex])
+//    val videoUrls = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
 
-// Create a single ExoPlayer instance for video playback
+    // Create a single ExoPlayer instance for video playback
     val exoPlayer = remember {
         ExoPlayer.Builder(context)
             .build().apply {
-                setMediaItem(MediaItem.fromUri(currentVideoUrl))
+                setMediaItem(MediaItem.fromUri(Uri.parse(videoUrls)))
                 this.prepare()
                 this.playWhenReady = true
             }
     }
 
-    var shouldShowControls by remember { mutableStateOf(false) }
-    var isPlaying by remember { mutableStateOf(false) } // Initialize isPlaying as false
+    var isPlaying by remember { mutableStateOf(false) }
+
     var videoTimer by remember { mutableLongStateOf(0L) }
+
     var totalDuration by remember { mutableLongStateOf(0L) }
+
     var bufferedPercentage by remember { mutableIntStateOf(0) }
-    var isQuestionDisplayed by remember { mutableStateOf(false) }
-    var playbackState by remember { mutableIntStateOf(0) } // Initialize playbackState as 0
+
+    var playbackState by remember { mutableIntStateOf(0) }
 
     DisposableEffect(key1 = true) {
-
         val listener = object : Player.Listener {
             override fun onEvents(player: Player, events: Player.Events) {
                 super.onEvents(player, events)
                 isPlaying = player.isPlaying
-                totalDuration = player.duration
-                videoTimer = player.contentPosition
+                totalDuration = player.duration.coerceAtLeast(0L)
+                videoTimer = player.contentPosition.coerceAtLeast(0L)
                 bufferedPercentage = player.bufferedPercentage
                 playbackState = player.playbackState
             }
@@ -123,15 +135,12 @@ fun VideoViewScreen(modifier: VideoViewModel = viewModel()) {
 
             override fun onPlaybackStateChanged(state: Int) {
 //                playbackState = state
-//                isLoading = state == Player.STATE_BUFFERING
             }
 
             @SuppressLint("UnsafeOptInUsageError")
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-//                if (playbackState == Player.STATE_ENDED || playbackState == Player.STATE_IDLE) {
-//                    // Implement your logic here to show the indicator
-//                    Toast.makeText(context, "Hello", Toast.LENGTH_LONG).show()
-//                }
+//                indicatorRun = playWhenReady
+//                state = playbackState
             }
         }
         exoPlayer.addListener(listener)
@@ -160,19 +169,40 @@ fun VideoViewScreen(modifier: VideoViewModel = viewModel()) {
         }
     }
 
+    val handler = remember { Handler(Looper.getMainLooper()) }
+    val runnable = remember {
+        object : Runnable {
+            override fun run() {
+                videoTimer = exoPlayer.currentPosition
+                handler.postDelayed(this, 1000)
+            }
+        }
+    }
+
+    DisposableEffect(key1 = Unit) {
+        handler.postDelayed(runnable, 1000)
+        onDispose {
+            handler.removeCallbacks(runnable)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier//.height(275.dp)
                 .fillMaxWidth()
                 .height(275.dp)
-                .background(Color.Black)
+                .background(Color.Black),
         ) {
+            if (playbackState == Player.STATE_ENDED) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = Color.White)
+                }
+            }
             AndroidView(
                 factory = {
                     PlayerView(context).apply {
@@ -185,6 +215,7 @@ fun VideoViewScreen(modifier: VideoViewModel = viewModel()) {
                 },
                 modifier = Modifier.clickable { iconVisible = !iconVisible }
             )
+
             CustomButtonIcons(
                 iconVisible = iconVisible,
                 exoPlayer = exoPlayer,
@@ -200,7 +231,21 @@ fun VideoViewScreen(modifier: VideoViewModel = viewModel()) {
                 },
                 onPlay = { isPlaying = true },
                 playbackState = playbackState,
+                videoTimer = videoTimer,
+                totalDuration = totalDuration,
+                bufferedPercentage = { bufferedPercentage }
             )
+        }
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 8.dp)) {
+            TextView(
+                text = "$title",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TextView(text = "$description")
         }
     }
 }
@@ -213,6 +258,9 @@ fun CustomButtonIcons(
     onPlayPauseReplay: () -> Unit,
     onPlay: () -> Unit,
     playbackState: Int,
+    videoTimer: Long,
+    totalDuration: Long,
+    bufferedPercentage: () -> Int,
 ) {
     // setting
     var expandedSetting by remember { mutableStateOf(false) }
@@ -262,7 +310,14 @@ fun CustomButtonIcons(
                 },
                 playState = playbackState
             )
-            BottomIconsActionView()
+            BottomIconsActionView(
+                videoTimer = videoTimer,
+                totalDuration = totalDuration,
+                onSeekToChange = { time: Float ->
+                    exoPlayer.seekTo(time.toLong())
+                },
+                bufferedPercentage = { bufferedPercentage() }
+            )
         }
     }
 }
@@ -521,7 +576,7 @@ fun CenterPlayActionView(
                             Icons.Default.Pause
                         }
 
-                        (isPlaying.not() && playState == Player.STATE_ENDED) -> {
+                        (playState == Player.STATE_ENDED && isPlaying.not()) -> {
                             Icons.Default.Replay
                         }
 
@@ -549,8 +604,12 @@ fun CenterPlayActionView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomIconsActionView() {
-
+fun BottomIconsActionView(
+    videoTimer: Long,
+    totalDuration: Long,
+    onSeekToChange: (Float) -> Unit,
+    bufferedPercentage: () -> Int
+) {
     val context = LocalContext.current
     val activity = context as? Activity
     // Fullscreen state
@@ -564,70 +623,89 @@ fun BottomIconsActionView() {
                 ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
+    val changeBuffer =
+        remember(bufferedPercentage()) { bufferedPercentage() } // Corrected the state type to Float
+    val interactionSource = remember { MutableInteractionSource() }
+    val colors = SliderDefaults.colors(
+        thumbColor = Color.Red,
+        activeTrackColor = Color.Red,
+        inactiveTrackColor = Color.Transparent,
+    )
     // duration slider and zoom
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        var sliderPosition by remember { mutableFloatStateOf(0f) } // Corrected the state type to Float
-        val interactionSource = remember { MutableInteractionSource() }
-        val colors = SliderDefaults.colors(
-            thumbColor = Color.Red,
-            activeTrackColor = Color.Red
-        )
-        Column(
+    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Bottom) {
+        // show Full screen and Exit screen
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // show Full screen and Exit screen
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            // show the time
+            Row(modifier = Modifier.wrapContentWidth()) {
                 Text(
-                    text = sliderPosition.toString(),
+                    text = videoTimer.toString(),
                     color = Color.White,
                     modifier = Modifier.padding(start = 5.dp)
-                ) // show the text
-                IconButton(
-                    onClick = {
-                        landScapeScreen = !landScapeScreen
-                        onConvertLandScape()
-                    }
-                ) {
-                    Icon(
-                        imageVector = if (landScapeScreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                }
+                )
+                Text(
+                    text = "/",
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
+                Text(
+                    text = totalDuration.toString(),
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 3.dp)
+                )
             }
-            // slider
-            Slider(
-                value = sliderPosition, // Changed 'state' to 'value'
-                onValueChange = {
-                    sliderPosition = it
-                }, // Added 'onValueChange' to update the value
-                interactionSource = interactionSource,
-                valueRange = 0f..10f,
-                colors = colors,
-                thumb = {
-                    SliderDefaults.Thumb(
-                        interactionSource = interactionSource,
-                        colors = colors,
-                        modifier = Modifier.size(15.dp)
+            IconButton(
+                onClick = {
+                    landScapeScreen = !landScapeScreen
+                    onConvertLandScape()
+                }
+            ) {
+                Icon(
+                    imageVector = if (landScapeScreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen,
+                    contentDescription = null,
+                    tint = Color.White
+                )
+            }
+        }
+        // slider
+        Column(modifier = Modifier.height(5.dp)) {
+            Box {
+                Slider(
+                    value = changeBuffer.toFloat(),
+                    enabled = false,
+                    onValueChange = { },
+                    interactionSource = interactionSource,
+                    valueRange = 0f..100f,
+                    colors = SliderDefaults.colors(
+                        disabledThumbColor = Color.Transparent,
+                        disabledActiveTrackColor = Color.White,
+                        activeTickColor = Color.White,
                     )
-                },
-                modifier = Modifier
-                    .height(5.dp)
-                    .fillMaxWidth()
-            )
+                )
+
+                Slider(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = videoTimer.toFloat(),
+                    onValueChange = { onSeekToChange },
+                    valueRange = 0f..totalDuration.toFloat(),
+                    colors = colors,
+                    interactionSource = interactionSource,
+                    thumb = {
+                        SliderDefaults.Thumb(
+                            interactionSource = interactionSource,
+                            colors = colors,
+                            modifier = Modifier.size(15.dp)
+                        )
+                    },
+                )
+            }
         }
     }
 }
-
 
 open class ListOfSettingMenus(var icon: ImageVector, val name: String) {
     object Speed : ListOfSettingMenus(Icons.Default.Settings, "Speed")
