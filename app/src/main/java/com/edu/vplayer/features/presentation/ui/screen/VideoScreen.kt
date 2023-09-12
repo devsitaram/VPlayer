@@ -60,10 +60,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.edu.vplayer.features.presentation.ViewModel.VideoViewModel
 import com.edu.vplayer.features.presentation.ui.components.TextView
 import kotlinx.coroutines.delay
 
@@ -74,7 +76,7 @@ fun Media3Play() {
 }
 
 @Composable
-fun VideoViewScreen(modifier: Modifier = Modifier) {
+fun VideoViewScreen(modifier: VideoViewModel = viewModel()) {
     val context = LocalContext.current
 
     val videoUrls = mutableListOf(
@@ -167,7 +169,8 @@ fun VideoViewScreen(modifier: Modifier = Modifier) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier//.height(275.dp)
-                .fillMaxWidth().height(275.dp)
+                .fillMaxWidth()
+                .height(275.dp)
                 .background(Color.Black)
         ) {
             AndroidView(
@@ -180,7 +183,7 @@ fun VideoViewScreen(modifier: Modifier = Modifier) {
                         )
                     }
                 },
-                modifier = modifier.clickable { iconVisible = !iconVisible }
+                modifier = Modifier.clickable { iconVisible = !iconVisible }
             )
             CustomButtonIcons(
                 iconVisible = iconVisible,

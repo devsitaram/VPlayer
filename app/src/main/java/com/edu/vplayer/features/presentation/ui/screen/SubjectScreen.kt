@@ -19,11 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.edu.vplayer.R
+import com.edu.vplayer.features.presentation.ViewModel.VideoDetails
+import com.edu.vplayer.features.presentation.ViewModel.VideoViewModel
 import com.edu.vplayer.features.presentation.ui.components.ContentCardView
 import com.edu.vplayer.features.presentation.ui.components.TextView
 
 @Composable
-fun SubjectViewScreen(navHostController: NavHostController) {
+fun SubjectViewScreen(navHostController: NavHostController, videoViewModel: VideoViewModel) {
 
     val listOfSubject = mutableListOf<SubjectLists>()
     listOfSubject.add(
@@ -80,8 +82,8 @@ fun SubjectViewScreen(navHostController: NavHostController) {
                             topic = item.topic,
                             description = item.description,
                             onClickable = {
-//                                val subject = SubjectDetail(topic = item.topic, description = item.description)
-//                                subjectDetailsViewModel.addSubjectDetails(newSubjectDetails = subject)
+                                val videoDetails = VideoDetails(title = item.topic, videoUri = item.description)
+                                videoViewModel.addVideoDetails(newVideoDetails = videoDetails)
                                 navHostController.navigate(ScreenList.VideoScreen.route)
                             }
                         )
@@ -97,7 +99,6 @@ data class SubjectLists(
     val topic: String,
     val description: String,
 )
-
 
 ////listOfSubject.add(
 ////SubjectLists(
