@@ -1,25 +1,44 @@
 package com.edu.vplayer.features.presentation.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
@@ -34,6 +54,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -48,6 +69,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.edu.vplayer.R
 
 @Composable
@@ -149,7 +171,24 @@ fun TextButtonView(
     ) {
         TextView(text = text, style = textStyle, modifier = Modifier)
     }
+
+
 }
+
+@Composable
+fun ClickableTextView(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    style: TextStyle = TextStyle(),
+    softWrap: Boolean = false,
+    overflow: TextOverflow.Companion = TextOverflow,
+    maxLines: Int = 1,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    onClick: () -> Unit
+) {
+    ClickableText(text = text, onClick = { onClick() }, style = style)
+}
+
 
 // input text fields
 @Composable
@@ -239,7 +278,7 @@ fun PasswordTextFieldView(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { TextView(text = label, style = textStyle) },
+        label = { TextView(text = "", style = textStyle) },
         placeholder = {
             TextView(
                 text = placeholder,
@@ -310,5 +349,101 @@ fun IconView(
         contentDescription = contentDescription,
         modifier = modifier,
         tint = tint
+    )
+}
+
+
+
+@Composable
+fun FullScreenLoaderComponent() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center)
+        )
+    }
+}
+
+
+@Composable
+fun SignInGoogleButton(
+    onClick: () -> Unit,
+) {
+            Button(
+                onClick = { onClick() },
+                modifier = Modifier
+                    .width(160.dp),
+                colors = ButtonDefaults.buttonColors(Color.White),
+
+                ) {
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_google),
+                    contentDescription = null, modifier = Modifier
+                        .height(20.dp)
+                        .width(20.dp)
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
+                androidx.compose.material3.Text(text = "Google", color = Color.Black)
+            }
+        }
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ButtonAppBarView() {
+    TopAppBar(
+        title = { },
+        navigationIcon = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .fillMaxHeight(),
+
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_islington),
+                    contentDescription = null,
+                    Modifier
+                        .padding(start = 10.dp)
+                        .height(40.dp)
+                        .width(40.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+
+                    IconButton(
+                        onClick = {
+//                            navController.navigate(SearchBarItem.SearchBar.route)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            // onclick action
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    }
+
+                }
+            }
+        },
+        modifier = Modifier
+            .shadow(5.dp)
     )
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327310511814",
+    "project_id": "vplayer-211df",
+    "storage_bucket": "vplayer-211df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327310511814:android:e96ebee188f8b3748e11c7",
+        "android_client_info": {
+          "package_name": "com.edu.vplayer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNtxjcXlPJFAGkx4Jip34WSJZQJ6Hozm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

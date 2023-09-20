@@ -1,0 +1,27 @@
+package com.edu.vplayer.features.di
+
+import com.edu.vplayer.features.domain.repository.SubjectRepository
+import com.edu.vplayer.features.domain.repository.UserRepository
+import com.edu.vplayer.features.domain.usecase.LoginUseCase
+import com.edu.vplayer.features.domain.usecase.SubjectUseCase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class AppDetails {
+    @Singleton
+    @Provides
+    fun providesGetUser(userRepository: UserRepository): LoginUseCase{
+        return LoginUseCase(userRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesGetSubject(subjectRepository: SubjectRepository): SubjectUseCase{
+        return SubjectUseCase(subjectRepository)
+    }
+}

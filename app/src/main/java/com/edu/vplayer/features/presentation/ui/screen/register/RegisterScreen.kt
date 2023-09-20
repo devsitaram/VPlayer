@@ -1,7 +1,7 @@
-package com.edu.vplayer.features.presentation.ui.screen
+package com.edu.vplayer.features.presentation.ui.screen.register
 
+import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,15 +12,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,13 +30,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.edu.vplayer.R
 import com.edu.vplayer.features.presentation.ui.components.ButtonView
@@ -46,42 +46,87 @@ import com.edu.vplayer.features.presentation.ui.components.InputTextFieldView
 import com.edu.vplayer.features.presentation.ui.components.PainterImageView
 import com.edu.vplayer.features.presentation.ui.components.PasswordTextFieldView
 import com.edu.vplayer.features.presentation.ui.components.TextView
+import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
+import com.edu.vplayer.features.presentation.viewModel.LoginViewModel
+
 
 @Composable
-fun LoginViewScreen(navHostController: NavHostController) {
-
+fun RegisterViewScreen(navHostController: NavHostController) {
+    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val checked = remember { mutableStateOf(false) }
+    var isNameEmpty by remember { mutableStateOf(false)}
+    var isEmailEmpty by remember { mutableStateOf(false)}
+    var isPasswordEmpty by remember { mutableStateOf(false)}
+    val loginViewModel: LoginViewModel = hiltViewModel()
+
+
+    val onClick: () -> Unit = {
+        isNameEmpty = name.isEmpty()
+        isEmailEmpty = email.isEmpty()
+        isPasswordEmpty = password.isEmpty()
+        if (isNameEmpty || isEmailEmpty || isPasswordEmpty) {
+//           val isSuccess  = loginViewModel.getUsers(email, password)
+            // Toast.makeText(context, "$user", Toast.LENGTH_SHORT).show()
+
+//            if (isSuccess == true) {
+//                navHostController.navigate(ScreenList.LoginScreen.route)
+//            }
+
+
+        }
+    }
+
+
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(15.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
+            IconButton(onClick = { navHostController.navigate(ScreenList.LoginScreen.route)}) {
+                IconView(imageVector = Icons.Default.ArrowBack)
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp), horizontalAlignment = Alignment.Start
+                    .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally,
+
             ) {
-                PainterImageView(painterResource(id = R.mipmap.ic_login))
+                PainterImageView(painterResource(id = R.mipmap.ic_register))
                 Spacer(modifier = Modifier.padding(5.dp))
                 TextView(
-                    text = "Welcome Back!",
+                    text = "Create an Account",
                     style = TextStyle(fontWeight = FontWeight.Bold, color = Color.Gray),
                     fontSize = 20.sp,
                 )
 
             }
             InputTextFieldView(
+                value = name,
+                onValueChange = { name = it },
+                label = "",
+                placeholder = "Enter Name",
+                textStyle = TextStyle(),
+                isError = isNameEmpty,
+                invalidMessage = "Name Text field is Empty!",
+                errorColor = Color.Red,
+                leadingIcon = { IconView(imageVector = Icons.Default.Person) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            )
+            InputTextFieldView(
                 value = email,
                 onValueChange = { email = it },
                 label = "",
                 placeholder = "Enter Email",
                 textStyle = TextStyle(),
-                invalidMessage = "",
+                isError = isEmailEmpty,
+                invalidMessage = "Email Text field is Empty!",
+                errorColor = Color.Red,
                 leadingIcon = { IconView(imageVector = Icons.Default.Email) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -94,37 +139,19 @@ fun LoginViewScreen(navHostController: NavHostController) {
                 label = "",
                 placeholder = "Enter Password",
                 textStyle = TextStyle(),
-                invalidMessage = "",
+                isEmpty = isPasswordEmpty,
+                invalidMessage = "password Text field is Empty!",
+                errorColor = Color.Red,
                 leadingIcon = { IconView(imageVector = Icons.Default.Lock) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp)
             )
 
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = checked.value,
-                    onCheckedChange = { isChecked -> checked.value = isChecked })
-//                   TextView(text = "Remember Password is ${if (checked.value) "checked" else "unchecked"}")
-                TextView(text = "Remember Password")
-                Spacer(modifier = Modifier.padding(30.dp))
-                Card(
-                    modifier = Modifier
-                        .width(182.dp)
-                        .clickable { },
-                    colors = CardDefaults.cardColors(Color.Transparent)
-                ) {
-                    TextView(text = "Forgot Password?", style = TextStyle(color = Color.Red))
-                }
-            }
             ButtonView(
-                onClick = {},
-                btnColor = ButtonDefaults.buttonColors(),
-                text = "Login In",
+                onClick = {onClick()},
+                btnColor = ButtonDefaults.buttonColors(Color.Blue),
+                text = "Register now",
                 textStyle = TextStyle(Color.White, fontWeight = FontWeight.Bold),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -142,7 +169,7 @@ fun LoginViewScreen(navHostController: NavHostController) {
                     thickness = 2.dp
                 )
                 Text(
-                    text = "or login with",
+                    text = "or register with",
                     modifier = Modifier.padding(start = 4.dp, end = 4.dp)
                 )
                 Divider(
