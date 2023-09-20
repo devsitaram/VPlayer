@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.edu.vplayer.features.presentation.ui.screen.login.ForgotViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.login.LoginViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.register.RegisterViewScreen
-import com.edu.vplayer.features.presentation.ui.screen.SplashViewScreen
+import com.edu.vplayer.features.presentation.ui.screen.splashscreen.SplashViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.subject.SubjectViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.video.VideoViewScreen
 
