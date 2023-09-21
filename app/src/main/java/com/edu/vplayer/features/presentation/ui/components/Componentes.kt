@@ -1,9 +1,7 @@
 package com.edu.vplayer.features.presentation.ui.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,13 +20,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
@@ -70,13 +66,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.edu.vplayer.R
 
 @Composable
 fun TextView(
     text: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier= Modifier,
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
@@ -89,10 +84,17 @@ fun TextView(
     overflow: TextOverflow = TextOverflow.Clip,
     softWrap: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
 ) {
+//    Text(
+//        text = text,
+//        modifier = modifier,
+//        color = color,
+//        fontFamily = fontFamily,
+//        fontSize = fontSize,
+//        fontWeight = fontWeight,
+//    )
     Text(
         text = text,
         modifier = modifier,
@@ -108,7 +110,6 @@ fun TextView(
         overflow = overflow,
         softWrap = softWrap,
         maxLines = maxLines,
-        minLines = minLines,
         onTextLayout = onTextLayout,
         style = style
     )
@@ -200,7 +201,7 @@ fun InputTextFieldView(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     leadingIcon: @Composable() (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
+    modifier: Modifier ,
     placeholder: String,
     textStyle: TextStyle,
     isEmpty: Boolean = false,

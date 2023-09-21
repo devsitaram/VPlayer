@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.edu.vplayer.features.presentation.ui.screen.login.ForgotViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.login.LoginViewScreen
+import com.edu.vplayer.features.presentation.ui.screen.profile.ProfileViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.register.RegisterViewScreen
-import com.edu.vplayer.features.presentation.ui.screen.splashscreen.SplashViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.subject.SubjectViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.video.VideoViewScreen
 
@@ -19,7 +19,9 @@ fun NavigationViewScreen(navController: NavHostController, getUserDevice: String
     ) {
         composable(ScreenList.SplashScreen.route) {
 //            SplashViewScreen(navController, getUserDevice)
-            LoginViewScreen(navController)
+//            LoginViewScreen(navController)
+            ProfileViewScreen(navController)
+
 
         }
         composable(ScreenList.RegisterScreen.route) {
@@ -39,6 +41,11 @@ fun NavigationViewScreen(navController: NavHostController, getUserDevice: String
 
         }
 
+        composable(ScreenList.ProfileScreen.route) {
+//            ProfileViewScreen(navController)
+
+        }
+
     }
 }
 
@@ -47,6 +54,8 @@ sealed class ScreenList(val route: String) {
     object LoginScreen : ScreenList("LoginScreen")
     object SubjectScreen : ScreenList("SubjectScreen")
     object VideoScreen : ScreenList("VideoScreen")
+    object ProfileScreen : ScreenList("ProfileScreen")
+
     object RegisterScreen : ScreenList("RegisterScreen")
     object ForgotScreen : ScreenList("ForgotScreen")
 

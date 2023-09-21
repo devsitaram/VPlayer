@@ -1,6 +1,5 @@
 package com.edu.vplayer.features.presentation.ui.screen.register
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -44,14 +42,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.edu.vplayer.R
 import com.edu.vplayer.features.presentation.ui.components.ButtonView
-import com.edu.vplayer.features.presentation.ui.components.IconButtonView
 import com.edu.vplayer.features.presentation.ui.components.IconView
 import com.edu.vplayer.features.presentation.ui.components.InputTextFieldView
 import com.edu.vplayer.features.presentation.ui.components.PainterImageView
 import com.edu.vplayer.features.presentation.ui.components.PasswordTextFieldView
 import com.edu.vplayer.features.presentation.ui.components.TextView
 import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
-import com.edu.vplayer.features.presentation.viewModel.LoginViewModel
 import com.edu.vplayer.features.presentation.viewModel.RegisterViewModel
 
 

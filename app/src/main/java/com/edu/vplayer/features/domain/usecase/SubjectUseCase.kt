@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class SubjectUseCase(private val subjectRepository: SubjectRepository) {
-
     operator fun invoke(): Flow<Resource<List<SubjectItem?>>> = flow {
         emit(Resource.Loading())
         try {

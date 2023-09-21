@@ -39,27 +39,26 @@ import com.edu.vplayer.features.presentation.ui.components.ButtonAppBarView
 import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
 import com.edu.vplayer.features.presentation.viewModel.SubjectViewModel
 import com.edu.vplayer.ui.theme.White20
-
 @Composable
 fun SubjectViewScreen(
     navController: NavController,
     subjectViewModel: SubjectViewModel = hiltViewModel()
 ) {
-    val result = subjectViewModel.subject.value
-    if (result.isLoading) {
+    val subjectResult = subjectViewModel.subject.value
+    if (subjectResult.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             // indicator
             CircularProgressIndicator()
         }
     }
-    if (result.isError.isNotBlank()) {
+    if (subjectResult.isError.isNotBlank()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             // error message
-            Text(text = result.isError)
+            Text(text = subjectResult.isError)
         }
     }
 
-    result.isData?.let {
+    subjectResult.isData?.let {
         Row(modifier = Modifier.fillMaxWidth()) {
             ButtonAppBarView()
         }
@@ -88,7 +87,6 @@ fun SubjectViewScreen(
         }
     }
 }
-
 @Composable
 fun SubjectCard(
     id: String,
@@ -143,7 +141,6 @@ fun SubjectCard(
                     )
                     Spacer(modifier = Modifier.padding(5.dp))
                     Text(text = "View Package Details", color = Color.Blue)
-
                 }
             }
         }
