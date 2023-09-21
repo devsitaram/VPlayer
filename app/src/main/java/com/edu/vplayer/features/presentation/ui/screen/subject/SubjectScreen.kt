@@ -1,6 +1,5 @@
 package com.edu.vplayer.features.presentation.ui.screen.subject
 
-import android.service.autofill.OnClickAction
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,10 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.edu.vplayer.features.data.data_resource.remote.api.ApiConstants.DEFAULT_IMAGE_URL
-import com.edu.vplayer.features.data.data_resource.remote.api.ApiConstants.IMAGE_BASE_URL
+import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.DEFAULT_IMAGE_URL
+import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.IMAGE_BASE_URL
 import com.edu.vplayer.features.presentation.ui.components.ButtonAppBarView
 import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
 import com.edu.vplayer.features.presentation.viewModel.SubjectViewModel
@@ -105,7 +102,7 @@ fun SubjectCard(
             .wrapContentWidth()
             .clickable { onClickAction() },
         colors = CardDefaults.cardColors(
-            Color.Transparent
+            Color.White
         ),
         border = BorderStroke(1.dp, White20),
 

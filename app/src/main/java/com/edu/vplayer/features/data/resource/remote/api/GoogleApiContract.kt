@@ -1,4 +1,4 @@
-package com.edu.vplayer.features.data.data_resource.remote.api
+package com.edu.vplayer.features.data.resource.remote.api
 
 import android.app.Activity
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.edu.vplayer.features.data.data_resource.remote.api
+package com.edu.vplayer.features.data.resource.remote.api
 
 object ApiConstants {
     const val BASE_URL = "https://api.mysecondteacher.com.np/api/"

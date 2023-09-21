@@ -1,7 +1,7 @@
 package com.edu.vplayer.features.domain.usecase
 
-import com.edu.vplayer.features.data.data_resource.common.Resource
-import com.edu.vplayer.features.data.data_resource.remote.api.model.SubjectItem
+import com.edu.vplayer.features.data.common.Resource
+import com.edu.vplayer.features.data.resource.remote.api.model.SubjectItem
 import com.edu.vplayer.features.domain.repository.SubjectRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LocalTextStyle
@@ -447,3 +448,37 @@ fun ButtonAppBarView() {
             .shadow(5.dp)
     )
 }
+
+@Composable
+fun SimpleButtonComponent(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(onClick = onClick) {
+        Text(text = text)
+    }
+}
+
+
+@Composable
+fun InputFieldComponent(
+    text: String,
+    onChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    singleLine: Boolean = true,
+    label: String = "Some val",
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+) {
+    OutlinedTextField(
+        value = text,
+        onValueChange = onChange,
+        modifier = modifier,
+        singleLine = singleLine,
+        label = {
+            Text(text = label)
+        },
+        keyboardActions = keyboardActions,
+    )
+}
+
+

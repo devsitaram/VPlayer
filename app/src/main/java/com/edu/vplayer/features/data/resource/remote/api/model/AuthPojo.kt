@@ -1,4 +1,4 @@
-package com.edu.vplayer.features.data.data_resource.remote.api.model
+package com.edu.vplayer.features.data.resource.remote.api.model
 
 data class AuthPojo(
 	val result: Results? = null,

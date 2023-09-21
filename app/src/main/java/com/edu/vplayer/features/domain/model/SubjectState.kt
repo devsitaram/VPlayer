@@ -1,6 +1,6 @@
 package com.edu.vplayer.features.domain.model
 
-import com.edu.vplayer.features.data.data_resource.remote.api.model.SubjectItem
+import com.edu.vplayer.features.data.resource.remote.api.model.SubjectItem
 
 data class SubjectState(
     val isLoading: Boolean = false,

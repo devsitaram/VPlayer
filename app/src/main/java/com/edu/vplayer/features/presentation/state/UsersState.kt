@@ -1,6 +1,6 @@
 package com.edu.vplayer.features.presentation.state
 
-import com.edu.vplayer.features.data.data_resource.remote.api.model.AuthPojo
+import com.edu.vplayer.features.data.resource.remote.api.model.AuthPojo
 
 
 data class UsersState(

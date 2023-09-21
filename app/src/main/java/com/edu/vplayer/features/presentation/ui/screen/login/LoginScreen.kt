@@ -24,7 +24,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -46,8 +45,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.vplayer.R
-import com.edu.vplayer.features.data.data_resource.common.util.isValidEmail
-import com.edu.vplayer.features.data.data_resource.remote.api.GoogleApiContract
+import com.edu.vplayer.features.data.common.util.isValidEmail
+import com.edu.vplayer.features.data.resource.remote.api.GoogleApiContract
 import com.edu.vplayer.features.presentation.ui.components.ButtonView
 import com.edu.vplayer.features.presentation.ui.components.ClickableTextView
 import com.edu.vplayer.features.presentation.ui.components.FullScreenLoaderComponent
@@ -70,7 +69,7 @@ fun LoginViewScreen(
 ) {
     val context = LocalContext.current
     val getSharedPreferences = context.getSharedPreferences("my_preferences", ComponentActivity.MODE_PRIVATE)
-
+//    val usersRepository = UsersRepository(context)
     val result = loginViewModel.users.value
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -207,7 +206,10 @@ fun LoginViewScreen(
                 )
             }
             ButtonView(
-                onClick = { onClick() },
+                onClick = { onClick()
+//                    usersRepository.readAllUser
+
+                          },
                 btnColor = ButtonDefaults.buttonColors(Color.Blue),
                 text = "Login In",
                 textStyle = TextStyle(Color.White, fontWeight = FontWeight.Bold),

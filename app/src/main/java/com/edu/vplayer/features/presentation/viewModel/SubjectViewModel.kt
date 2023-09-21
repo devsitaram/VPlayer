@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.vplayer.features.data.data_resource.common.Resource
+import com.edu.vplayer.features.data.common.Resource
 import com.edu.vplayer.features.domain.model.SubjectState
 import com.edu.vplayer.features.domain.usecase.SubjectUseCase
 import kotlinx.coroutines.flow.launchIn

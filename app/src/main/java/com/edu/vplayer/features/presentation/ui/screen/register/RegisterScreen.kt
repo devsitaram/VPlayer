@@ -1,8 +1,10 @@
 package com.edu.vplayer.features.presentation.ui.screen.register
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -31,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,53 +52,67 @@ import com.edu.vplayer.features.presentation.ui.components.PasswordTextFieldView
 import com.edu.vplayer.features.presentation.ui.components.TextView
 import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
 import com.edu.vplayer.features.presentation.viewModel.LoginViewModel
+import com.edu.vplayer.features.presentation.viewModel.RegisterViewModel
 
 
 @Composable
-fun RegisterViewScreen(navHostController: NavHostController) {
+fun RegisterViewScreen(
+    navHostController: NavHostController,
+    viewModel: RegisterViewModel = hiltViewModel()
+) {
+
+val context = LocalContext.current
+
+    val registerUser = viewModel.register
+
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isNameEmpty by remember { mutableStateOf(false)}
-    var isEmailEmpty by remember { mutableStateOf(false)}
-    var isPasswordEmpty by remember { mutableStateOf(false)}
-    val loginViewModel: LoginViewModel = hiltViewModel()
 
+    var isNameEmpty by remember { mutableStateOf(false) }
+    var isEmailEmpty by remember { mutableStateOf(false) }
+    var isPasswordEmpty by remember { mutableStateOf(false) }
 
     val onClick: () -> Unit = {
-        isNameEmpty = name.isEmpty()
-        isEmailEmpty = email.isEmpty()
-        isPasswordEmpty = password.isEmpty()
-        if (isNameEmpty || isEmailEmpty || isPasswordEmpty) {
-//           val isSuccess  = loginViewModel.getUsers(email, password)
-            // Toast.makeText(context, "$user", Toast.LENGTH_SHORT).show()
-
-//            if (isSuccess == true) {
-//                navHostController.navigate(ScreenList.LoginScreen.route)
-//            }
-
-
+        if (name.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
+            viewModel.registerUser(name, email, password)
+            if (registerUser.value.isSuccess == true){
+                Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
+                navHostController.navigate(ScreenList.LoginScreen.route)
+            } else {
+                Toast.makeText(context, "Register Failed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
+    if (registerUser.value.isLoading){
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    }
 
+    if (registerUser.value.isError.isNotEmpty()){
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            TextView(text = registerUser.value.isError)
+        }
+    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(15.dp),
-
-        ) {
-            IconButton(onClick = { navHostController.navigate(ScreenList.LoginScreen.route)}) {
+            ) {
+            IconButton(onClick = { navHostController.navigate(ScreenList.LoginScreen.route) }) {
                 IconView(imageVector = Icons.Default.ArrowBack)
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
 
-            ) {
+                ) {
                 PainterImageView(painterResource(id = R.mipmap.ic_register))
                 Spacer(modifier = Modifier.padding(5.dp))
                 TextView(
@@ -149,7 +167,12 @@ fun RegisterViewScreen(navHostController: NavHostController) {
             )
 
             ButtonView(
-                onClick = {onClick()},
+                onClick = {
+                    isNameEmpty = name.isEmpty()
+                    isEmailEmpty = email.isEmpty()
+                    isPasswordEmpty = password.isEmpty()
+                    onClick()
+                },
                 btnColor = ButtonDefaults.buttonColors(Color.Blue),
                 text = "Register now",
                 textStyle = TextStyle(Color.White, fontWeight = FontWeight.Bold),

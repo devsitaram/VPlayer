@@ -18,10 +18,12 @@ fun NavigationViewScreen(navController: NavHostController, getUserDevice: String
         startDestination = ScreenList.SplashScreen.route
     ) {
         composable(ScreenList.SplashScreen.route) {
-            SplashViewScreen(navController, getUserDevice)
+//            SplashViewScreen(navController, getUserDevice)
+            LoginViewScreen(navController)
+
         }
         composable(ScreenList.RegisterScreen.route) {
-            RegisterViewScreen(navController)
+          RegisterViewScreen(navController)
         }
         composable(ScreenList.LoginScreen.route) {
             LoginViewScreen(navController)
@@ -33,7 +35,8 @@ fun NavigationViewScreen(navController: NavHostController, getUserDevice: String
             SubjectViewScreen(navController)
         }
         composable(ScreenList.VideoScreen.route) {
-            VideoViewScreen(navController)
+          VideoViewScreen(navController)
+
         }
 
     }
@@ -52,9 +55,3 @@ sealed class ScreenList(val route: String) {
 }
 
 
-//object Destinations{
-//    const   val Auth="Auth"
-//    const val Home = "home/{user}"
-//    const val VPlayer ="vPlayer"
-//
-//}

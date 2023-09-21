@@ -1,14 +1,14 @@
-package com.edu.vplayer.features.data.data_resource.remote.api.model
+package com.edu.vplayer.features.data.resource.remote.api.model
 
 data class UsersPojo(
-	val result: Result? = null,
+	val result: List<ResultItem>,
 	val success: Boolean? = null,
 	val abp: Boolean? = null,
 	val error: Any? = null,
 	val targetUrl: Any? = null,
 	val unAuthorizedRequest: Boolean? = null
 )
-data class Result(
+data class ResultItem(
 	val pendingBalance: Any? = null,
 	val isSchoolChatroomEnabled: Boolean? = null,
 	val role: String? = null,
@@ -38,4 +38,3 @@ data class Result(
 	val location: String? = null,
 	val isEmailConfirmed: Boolean? = null
 )
-

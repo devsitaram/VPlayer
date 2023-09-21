@@ -25,7 +25,9 @@ fun VideoViewScreen(navController: NavHostController) {
     playerView.player = exoPlayer
 
     DisposableEffect(
-        AndroidView(factory = {playerView})){
+        AndroidView(factory = {playerView})
+
+    ){
 
         exoPlayer.prepare()
         exoPlayer.playWhenReady= true
