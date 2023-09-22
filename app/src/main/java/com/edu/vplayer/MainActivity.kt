@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.edu.vplayer.features.presentation.ui.navigation.NavigationViewScreen
+import com.edu.vplayer.features.presentation.ui.navigation.MainNavViewScreen
 import com.edu.vplayer.ui.theme.VPlayerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavigationViewScreen(navController = navController, getUserDevice = getUserDevice)
+                    MainNavViewScreen(navController = navController, getUserDevice = getUserDevice)
                 }
             }
         }

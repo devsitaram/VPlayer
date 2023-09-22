@@ -20,11 +20,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DatasetLinked
 import androidx.compose.material.icons.filled.DownloadForOffline
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Note
@@ -54,10 +56,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.edu.vplayer.R
+import com.edu.vplayer.features.data.resource.local.ProfileEntity
 import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.DEFAULT_IMAGE_URL
 import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.IMAGE_BASE_URL
 import com.edu.vplayer.features.presentation.ui.components.IconView
 import com.edu.vplayer.features.presentation.ui.components.TextView
+import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
 import com.edu.vplayer.features.presentation.viewModel.ProfileViewModel
 import com.edu.vplayer.ui.theme.BlueGrey
 import com.edu.vplayer.ui.theme.skyBlue
@@ -93,11 +97,22 @@ fun ProfileViewScreen(
                 emailAddress = profile?.emailAddress.toString(),
                 schoolName = profile?.schoolName.toString(),
                 location = profile?.location.toString(),
-                imageUrl = profile?.schoolPhotoUrl.toString()
+                imageUrl = IMAGE_BASE_URL + profile?.schoolPhotoUrl,//profile?.schoolPhotoUrl.toString(),
+                navController = navController
+            )
+
+            profileViewModel.insertUserDetails(
+                profileEntity = ProfileEntity(
+                    name = profile?.fullName.toString(),
+                    email = profile?.emailAddress.toString(),
+                    collegeName = profile?.schoolName.toString(),
+                    location = profile?.location.toString()
+                )
             )
         }
     }
 }
+
 @Composable
 fun ProfileCard(
     userId: String,
@@ -107,6 +122,7 @@ fun ProfileCard(
     schoolName: String,
     location: String,
     imageUrl: String,
+    navController: NavController
 ) {
     val color = skyGreen
     val transparent = color.copy(alpha = 0.10f)
@@ -128,14 +144,16 @@ fun ProfileCard(
                 shape = ShapeDefaults.ExtraLarge,
                 colors = CardDefaults.cardColors(transparent)
             ) {
-                Icon(
-                    imageVector = Icons.Default.PersonOutline, contentDescription = null,
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .size(60.dp)
-                        .padding(10.dp),
-                    tint = skyGreen
-                )
+                IconButton(onClick = { navController.navigate(ScreenList.LogoutScreen.route) }) {
+                    Icon(
+                        imageVector = Icons.Default.PersonOutline, contentDescription = null,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(60.dp)
+                            .padding(10.dp),
+                        tint = skyGreen
+                    )
+                }
             }
             Column(
                 modifier = Modifier.padding(10.dp),
@@ -157,7 +175,7 @@ fun ProfileCard(
                 border = BorderStroke(1.dp, skyBlue),
                 colors = CardDefaults.cardColors(Color.Transparent)
             ) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Default.Edit, contentDescription = null,
                         modifier = Modifier.padding(5.dp), tint = skyBlue
@@ -180,9 +198,15 @@ fun ProfileCard(
                 colors = CardDefaults.cardColors(BlueGrey)
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    AsyncImage(
-                        model = IMAGE_BASE_URL + imageUrl,//null = painterResource(id = R.mipmap.ic_islington),
-                        contentDescription = null, modifier = Modifier.padding(10.dp)
+//                    AsyncImage(
+//                        model = imageUrl,//null = painterResource(id = R.mipmap.ic_islington),
+//                        contentDescription = null, modifier = Modifier.padding(10.dp)
+//                    )
+
+                    Image(
+                        painter = painterResource(id = R.mipmap.ic_islington),
+                        contentDescription = null,
+                        modifier = Modifier.padding(10.dp)
                     )
 
                     Column(
@@ -197,6 +221,7 @@ fun ProfileCard(
 
             }
         }
+
         ListOfRow(icon = Icons.Default.AccountCircle, title = "Account")
         ListOfRow(icon = Icons.Default.Note, title = "Notices")
         ListOfRow(icon = Icons.Default.DownloadForOffline, title = "Downloads")
@@ -263,14 +288,17 @@ fun ListOfColumn(
     Divider()
     Row(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconView(imageVector = icon ,contentDescription = null , tint = Color.LightGray)
+        IconView(imageVector = icon, contentDescription = null, tint = Color.LightGray)
         Column(modifier = Modifier.padding(start = 10.dp)) {
-            TextView(text = subTitle ,color = color)
-            TextView(text = subTitle, color = Color.LightGray, modifier = Modifier.padding(top = 5.dp))
+            TextView(text = subTitle, color = color)
+            TextView(
+                text = subTitle,
+                color = Color.LightGray,
+                modifier = Modifier.padding(top = 5.dp)
+            )
         }
     }
 }

@@ -111,7 +111,7 @@ fun LoginViewScreen(
             loginViewModel.getUsers(email, password)
             if (result.isData?.success == true) {
                 isSuccess = true
-                navController.navigate(ScreenList.SubjectScreen.route)
+                navController.navigate(ScreenList.BottomBarScreen.route)
                 val editSharedPreferences = getSharedPreferences.edit()
                 editSharedPreferences.putString("login_screen","${result.isData.result?.accessToken}").apply()
             } else {

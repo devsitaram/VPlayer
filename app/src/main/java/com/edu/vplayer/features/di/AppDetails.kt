@@ -17,13 +17,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppDetails {
-
     @Singleton
     @Provides
     fun providesGetUser(userRepository: UserRepository): LoginUseCase{
         return LoginUseCase(userRepository)
     }
-
     @Singleton
     @Provides
     fun providesGetSubject(subjectRepository: SubjectRepository): SubjectUseCase{

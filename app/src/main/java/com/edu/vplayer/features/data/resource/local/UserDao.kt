@@ -10,7 +10,6 @@ import androidx.room.Update
 
 @Dao
 interface UserDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: List<User?>)
 
@@ -25,5 +24,9 @@ interface UserDao {
 
     @Delete
     suspend fun deleteUser(user: User)
+
+    //Profile Info
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUserDetails(user: ProfileEntity?)
 }
 

@@ -1,6 +1,7 @@
 package com.edu.vplayer.features.presentation.ui.screen.subject
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -39,6 +42,7 @@ import com.edu.vplayer.features.presentation.ui.components.ButtonAppBarView
 import com.edu.vplayer.features.presentation.ui.navigation.ScreenList
 import com.edu.vplayer.features.presentation.viewModel.SubjectViewModel
 import com.edu.vplayer.ui.theme.White20
+
 @Composable
 fun SubjectViewScreen(
     navController: NavController,
@@ -60,14 +64,14 @@ fun SubjectViewScreen(
 
     subjectResult.isData?.let {
         Row(modifier = Modifier.fillMaxWidth()) {
-            ButtonAppBarView()
+            ButtonAppBarView(navController)
         }
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 50.dp), contentAlignment = Alignment.Center
+//                .background(Color.White)
+                .padding(top = 50.dp , bottom = 40.dp,), contentAlignment = Alignment.Center
         ) {
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -87,6 +91,7 @@ fun SubjectViewScreen(
         }
     }
 }
+
 @Composable
 fun SubjectCard(
     id: String,
@@ -95,55 +100,57 @@ fun SubjectCard(
     imageUrl: String,
     onClickAction: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .wrapContentWidth()
-            .clickable { onClickAction() },
-        colors = CardDefaults.cardColors(
-            Color.White
-        ),
-        border = BorderStroke(1.dp, White20),
 
-        ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = null,
-                Modifier
-                    .height(100.dp)
-                    .width(100.dp)
-                    .padding(16.dp)
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            Column(
-                modifier = Modifier
-                    .shadow(0.5.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+
+        Card(
+            modifier = Modifier
+                .wrapContentWidth()
+                .clickable { onClickAction() },
+            colors = CardDefaults.cardColors(
+                Color.White
+            ),
+            border = BorderStroke(1.dp, White20),
+
             ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = null,
+                    Modifier
+                        .height(100.dp)
+                        .width(100.dp)
+                        .padding(16.dp)
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
                 Column(
                     modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(16.dp)
+                        .shadow(0.5.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = title, style = TextStyle(fontWeight = FontWeight.Bold))
-                    Spacer(modifier = Modifier.padding(2.dp))
-                    Text(text = descriptions, color = Color.LightGray)
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(1.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Preview,
-                        contentDescription = null, modifier = Modifier, tint = Color.Blue
-                    )
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    Text(text = "View Package Details", color = Color.Blue)
+                    Column(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(text = title, style = TextStyle(fontWeight = FontWeight.Bold))
+                        Spacer(modifier = Modifier.padding(2.dp))
+                        Text(text = descriptions, color = Color.LightGray)
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(1.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Preview,
+                            contentDescription = null, modifier = Modifier, tint = Color.Blue
+                        )
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Text(text = "View Package Details", color = Color.Blue)
+                    }
                 }
             }
         }
+        Spacer(modifier = Modifier.padding(5.dp))
     }
-    Spacer(modifier = Modifier.padding(5.dp))
-}

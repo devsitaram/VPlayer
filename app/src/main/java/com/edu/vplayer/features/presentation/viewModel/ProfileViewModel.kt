@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.vplayer.features.data.common.Resource
+import com.edu.vplayer.features.data.resource.local.ProfileEntity
 import com.edu.vplayer.features.domain.usecase.ProfileUseCase
 import com.edu.vplayer.features.presentation.state.ProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,5 +40,9 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun insertUserDetails(profileEntity: ProfileEntity){
+        profileUseCase(profileEntity).launchIn(viewModelScope)
     }
 }

@@ -79,8 +79,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideProfileDetails(apiService: ApiService): ProfileRepository {
-        return ProfileRepositoryImpl(apiService)
+    fun provideProfileDetails(apiService: ApiService, userDao: UserDao): ProfileRepository {
+        return ProfileRepositoryImpl(apiService, userDao)
     }
 
 }

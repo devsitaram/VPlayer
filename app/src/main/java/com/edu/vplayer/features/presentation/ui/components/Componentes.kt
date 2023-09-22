@@ -66,6 +66,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.edu.vplayer.R
 
 @Composable
@@ -394,7 +396,7 @@ fun SignInGoogleButton(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ButtonAppBarView() {
+fun ButtonAppBarView(navController: NavController) {
     TopAppBar(
         title = { },
         navigationIcon = {
@@ -450,36 +452,55 @@ fun ButtonAppBarView() {
     )
 }
 
-@Composable
-fun SimpleButtonComponent(
-    text: String,
-    onClick: () -> Unit
-) {
-    Button(onClick = onClick) {
-        Text(text = text)
-    }
-}
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InputFieldComponent(
-    text: String,
-    onChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    singleLine: Boolean = true,
-    label: String = "Some val",
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-) {
-    OutlinedTextField(
-        value = text,
-        onValueChange = onChange,
-        modifier = modifier,
-        singleLine = singleLine,
-        label = {
-            Text(text = label)
+fun ButtonAppBarViewAp(navController: NavHostController) {
+    TopAppBar(
+        title = { },
+        navigationIcon = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .fillMaxHeight(),
+
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_islington),
+                    contentDescription = "",
+                    Modifier
+                        .padding(start = 10.dp)
+                        .height(40.dp)
+                        .width(40.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+
+                    IconButton(
+                        onClick = {
+//                            navController.navigate(SearchBarItem.SearchBar.route)
+                        }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.mipmap.ic_downloads),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    }
+                }
+            }
         },
-        keyboardActions = keyboardActions,
+        modifier = Modifier
+            .shadow(5.dp)
     )
 }
+
+
+
+
 
 
