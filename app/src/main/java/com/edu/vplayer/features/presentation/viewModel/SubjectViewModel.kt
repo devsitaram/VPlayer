@@ -7,6 +7,9 @@ import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.vplayer.features.data.common.Resource
+import com.edu.vplayer.features.data.resource.local.ProfileEntity
+import com.edu.vplayer.features.data.resource.local.SubjectEntity
+import com.edu.vplayer.features.data.resource.remote.api.model.SubjectItems
 import com.edu.vplayer.features.domain.model.SubjectState
 import com.edu.vplayer.features.domain.usecase.SubjectUseCase
 import kotlinx.coroutines.flow.launchIn
@@ -36,5 +39,9 @@ class SubjectViewModel @Inject constructor(private val subjectUseCase: SubjectUs
 
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun insertSubjectDetails(subjectItems: List<SubjectEntity>){
+        subjectUseCase(subjectItems).launchIn(viewModelScope)
     }
 }

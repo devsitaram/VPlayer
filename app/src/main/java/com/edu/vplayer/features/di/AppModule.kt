@@ -39,7 +39,7 @@ object AppModule {
             context.applicationContext,
             AppDatabase::class.java,
             "User_DB"
-        ).build().usersDao()
+        ).fallbackToDestructiveMigration().build().usersDao()
     }
 
     @Provides
@@ -72,8 +72,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSubjectAPi(apiService: ApiService): SubjectRepository {
-        return SubjectRepositoryImpl(apiService)
+    fun provideSubjectAPi(apiService: ApiService , userDao: UserDao): SubjectRepository {
+        return SubjectRepositoryImpl(apiService ,userDao)
     }
 
 

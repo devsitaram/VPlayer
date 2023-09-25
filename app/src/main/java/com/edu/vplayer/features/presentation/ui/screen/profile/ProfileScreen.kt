@@ -85,6 +85,14 @@ fun ProfileViewScreen(
     }
     profileResult.isData?.let {
         val profile = profileResult.isData.result
+        profileViewModel.insertUserDetails(
+            profileEntity = ProfileEntity(
+                name = profile?.fullName.toString(),
+                email = profile?.emailAddress.toString(),
+                collegeName = profile?.schoolName.toString(),
+                location = profile?.location.toString()
+            )
+        )
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -101,14 +109,7 @@ fun ProfileViewScreen(
                 navController = navController
             )
 
-            profileViewModel.insertUserDetails(
-                profileEntity = ProfileEntity(
-                    name = profile?.fullName.toString(),
-                    email = profile?.emailAddress.toString(),
-                    collegeName = profile?.schoolName.toString(),
-                    location = profile?.location.toString()
-                )
-            )
+
         }
     }
 }

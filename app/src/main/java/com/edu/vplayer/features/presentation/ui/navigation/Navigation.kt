@@ -34,7 +34,9 @@ fun MainNavViewScreen(navController: NavHostController, getUserDevice: String?) 
             SplashViewScreen(navController, getUserDevice)
         }
         composable(ScreenList.LoginScreen.route) {
-            LoginViewScreen(navController)
+//            LoginViewScreen(navController)
+            MainNavViewScreen()
+
         }
         composable(ScreenList.BottomBarScreen.route) {
             MainNavViewScreen()

@@ -1,12 +1,13 @@
 package com.edu.vplayer.features.data.resource.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
+import com.edu.vplayer.features.data.resource.remote.api.model.SubjectItems
 
 @Dao
 interface UserDao {
@@ -27,6 +28,15 @@ interface UserDao {
 
     //Profile Info
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserDetails(user: ProfileEntity?)
+    suspend fun insertUserDetails(profileEntity: ProfileEntity?)
+
+    @Upsert
+    suspend fun insertSubjectDetails(subject: List<SubjectEntity>)
+
+    @Query("SELECT * FROM Subject_table")
+    suspend fun getSubjectDetails(): List<SubjectItems>
+
+
+
 }
 
