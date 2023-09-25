@@ -1,5 +1,6 @@
 package com.edu.vplayer.features.presentation.ui.screen.subject
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.edu.vplayer.features.data.resource.local.SubjectEntity
+import com.edu.vplayer.features.data.resource.remote.api.ApiConstants
 import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.IMAGE_BASE_URL
 import com.edu.vplayer.features.data.resource.remote.api.model.AssetType
 import com.edu.vplayer.features.data.resource.remote.api.model.Level
@@ -51,7 +53,6 @@ fun SubjectViewScreen(
     navController: NavController,
     subjectViewModel: SubjectViewModel = hiltViewModel()
 ) {
-
     val context = LocalContext.current
     val subjectResult = subjectViewModel.subject.value
     if (subjectResult.isLoading) {
@@ -94,7 +95,7 @@ fun SubjectViewScreen(
                     val validityEndDate = it?.validityEndDate
                     val halfYearlyPrice = it?.halfYearlyPrice
                     val assetType = it?.assetType
-                    val photoUrl = IMAGE_BASE_URL + it?.photoUrl
+                    val photoUrl = it?.photoUrl
                     val isComingSoon = it?.isComingSoon
                     val name = it?.name
                     val planEndDate = it?.planEndDate
@@ -102,25 +103,12 @@ fun SubjectViewScreen(
                     val isStudentPremium = it?.isStudentPremium
                     val order = it?.order
                     SubjectCard(
-                        subjectId = subjectId,
-                        yearlyPrice = yearlyPrice,
-                        studentSubject = studentSubject,
-                        validityStartDate = validityStartDate,
-                        level = level,
-                        packageId = packageId,
-                        packageTag = packageTag,
-                        monthlyPrice = monthlyPrice,
-                        validityEndDate = validityEndDate,
-                        halfYearlyPrice = halfYearlyPrice,
-                        assetType = assetType,
-                        imageUrl = photoUrl,
-                        isComingSoon = isComingSoon,
+                        imageUrl = IMAGE_BASE_URL + photoUrl,
                         name = name,
                         planEndDate = planEndDate,
-                        packageGrade = packageGrade,
-                        isStudentPremium = isStudentPremium,
-                        order = order,
-                        onClickAction = { navController.navigate(ScreenList.VideoScreen.route) }
+                        onClickAction = {
+                            navController.navigate("VideoUrlScreen/${subjectId}/${name}")
+                        }
                     )
                     LaunchedEffect(key1 = subjectId, block = {
                         val listOfSubjectItem = listOf(
@@ -159,21 +147,6 @@ fun SubjectCard(
     planEndDate: String?,
     imageUrl: String,
     onClickAction: () -> Unit,
-    yearlyPrice: String?,
-    studentSubject: StudentSubject?,
-    subjectId: Int?,
-    validityStartDate: String?,
-    level: Level?,
-    packageId: Int?,
-    packageTag: String?,
-    monthlyPrice: String?,
-    validityEndDate: String?,
-    halfYearlyPrice: String?,
-    assetType: AssetType?,
-    isComingSoon: Boolean?,
-    packageGrade: String?,
-    isStudentPremium: Boolean?,
-    order: Int?
 ) {
 
 

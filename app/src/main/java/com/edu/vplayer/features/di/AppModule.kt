@@ -8,6 +8,7 @@ import com.edu.vplayer.features.data.resource.remote.api.ApiConstants
 import com.edu.vplayer.features.data.resource.remote.api.ApiService
 import com.edu.vplayer.features.data.repository_impl.SubjectRepositoryImpl
 import com.edu.vplayer.features.data.repository_impl.UserRepoImpl
+import com.edu.vplayer.features.data.repository_impl.VideoUrlRepositoryImpl
 import com.edu.vplayer.features.data.resource.local.AppDatabase
 import com.edu.vplayer.features.data.resource.local.AppDatabase.Companion.getInstance
 import com.edu.vplayer.features.data.resource.local.UserDao
@@ -15,6 +16,7 @@ import com.edu.vplayer.features.domain.repository.ProfileRepository
 import com.edu.vplayer.features.domain.repository.RegisterUserRepository
 import com.edu.vplayer.features.domain.repository.SubjectRepository
 import com.edu.vplayer.features.domain.repository.UserRepository
+import com.edu.vplayer.features.domain.repository.VideoUrlRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,6 +83,13 @@ object AppModule {
     @Provides
     fun provideProfileDetails(apiService: ApiService, userDao: UserDao): ProfileRepository {
         return ProfileRepositoryImpl(apiService, userDao)
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideVideoUrlApi(apiService: ApiService): VideoUrlRepository {
+        return VideoUrlRepositoryImpl(apiService)
     }
 
 }

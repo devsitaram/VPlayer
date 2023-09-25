@@ -9,20 +9,22 @@ import androidx.compose.material.icons.filled.Subject
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.edu.teachingnepal.features.classroom.ClassRoomScreenView
+import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.SUBJECT_ID
+import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.SUBJECT_NAME
 import com.edu.vplayer.features.presentation.ui.screen.HomeViewScreen
-import com.edu.vplayer.features.presentation.ui.screen.aptutor.APTutorScreenView
 import com.edu.vplayer.features.presentation.ui.screen.login.ForgotViewScreen
-import com.edu.vplayer.features.presentation.ui.screen.login.LoginViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.login.LogoutViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.profile.ProfileViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.register.RegisterViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.splashscreen.SplashViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.subject.SubjectViewScreen
+import com.edu.vplayer.features.presentation.ui.screen.video.VideoUrlViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.video.VideoViewScreen
-import com.google.android.material.bottomappbar.BottomAppBar
 
 @Composable
 fun MainNavViewScreen(navController: NavHostController, getUserDevice: String?) {
@@ -36,7 +38,6 @@ fun MainNavViewScreen(navController: NavHostController, getUserDevice: String?) 
         composable(ScreenList.LoginScreen.route) {
 //            LoginViewScreen(navController)
             MainNavViewScreen()
-
         }
         composable(ScreenList.BottomBarScreen.route) {
             MainNavViewScreen()
@@ -50,7 +51,6 @@ fun MainNavViewScreen(navController: NavHostController, getUserDevice: String?) 
 
     }
 }
-
 
 @Composable
 fun BottomAppBarController(navController: NavHostController) {
@@ -67,7 +67,23 @@ fun BottomAppBarController(navController: NavHostController) {
             ClassRoomScreenView(navController)
         }
         composable(NavigationItem.APTutor.route) {
-            APTutorScreenView(navController)
+//            ClassRoomScreenView(navController)
+        }
+        composable(
+            route = ScreenList.VideoUrlScreen.route,
+            arguments = listOf(
+                navArgument(name = SUBJECT_ID ) {
+                    type = NavType.StringType
+                },
+                        navArgument(name = SUBJECT_NAME ) {
+                    type = NavType.StringType
+                }
+            )
+        ) {navBackController ->
+            val subjId = navBackController.arguments?.getString(SUBJECT_ID)?.toInt()
+            val subjectName = navBackController.arguments?.getString(SUBJECT_NAME)
+
+            VideoUrlViewScreen(subjId,subjectName, navController)
         }
         composable(NavigationItem.Profile.route) {
             ProfileViewScreen(navController)
@@ -89,6 +105,7 @@ sealed class ScreenList(val route: String) {
     object ForgotScreen : ScreenList("ForgotScreen")
     object LogoutScreen : ScreenList("LogoutScreen")
     object BottomBarScreen : ScreenList("BottomBarScreen")
+     object VideoUrlScreen: ScreenList("VideoUrlScreen/{$SUBJECT_ID}/{$SUBJECT_NAME}")
 
 }
 

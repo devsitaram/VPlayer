@@ -22,7 +22,6 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
     init {
         getProfileData()
     }
-
     private fun getProfileData() {
         profileUseCase().onEach {
             when (it) {
