@@ -18,6 +18,7 @@ import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.SUBJECT_ID
 import com.edu.vplayer.features.data.resource.remote.api.ApiConstants.SUBJECT_NAME
 import com.edu.vplayer.features.presentation.ui.screen.HomeViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.login.ForgotViewScreen
+import com.edu.vplayer.features.presentation.ui.screen.login.LoginViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.login.LogoutViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.profile.ProfileViewScreen
 import com.edu.vplayer.features.presentation.ui.screen.register.RegisterViewScreen
@@ -36,8 +37,8 @@ fun MainNavViewScreen(navController: NavHostController, getUserDevice: String?) 
             SplashViewScreen(navController, getUserDevice)
         }
         composable(ScreenList.LoginScreen.route) {
-//            LoginViewScreen(navController)
-            MainNavViewScreen()
+            LoginViewScreen(navController)
+//            MainNavViewScreen()
         }
         composable(ScreenList.BottomBarScreen.route) {
             MainNavViewScreen()

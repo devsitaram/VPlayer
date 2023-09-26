@@ -13,7 +13,6 @@ class SubjectRepositoryImpl(private val apiService: ApiService , private val use
             return getSubject.ifEmpty {
                 return apiService.getSubject().result.map { it }
             }
-//            return apiService.getSubject().result.map { it }
         } catch (e: Exception) {
             throw Exception(e)
         } }

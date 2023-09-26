@@ -2,8 +2,6 @@ package com.edu.vplayer.features.domain.usecase
 
 import com.edu.vplayer.features.data.common.Resource
 import com.edu.vplayer.features.data.resource.local.ProfileEntity
-import com.edu.vplayer.features.data.resource.local.UserDao
-import com.edu.vplayer.features.data.resource.remote.api.model.ResultItem
 import com.edu.vplayer.features.data.resource.remote.api.model.UsersPojo
 import com.edu.vplayer.features.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow

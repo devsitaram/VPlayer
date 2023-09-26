@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
 import com.edu.vplayer.features.data.resource.remote.api.model.SubjectItems
+import com.edu.vplayer.features.data.resource.remote.api.model.VideoResult
 
 @Dao
 interface UserDao {
@@ -19,22 +20,23 @@ interface UserDao {
 
     @Query("DELETE FROM user_table where id = :id")
     suspend fun deleteById(id: Int)
-
     @Update
     suspend fun updateUser(user: User)
-
     @Delete
     suspend fun deleteUser(user: User)
 
     //Profile Info
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertUserDetails(profileEntity: ProfileEntity?)
-
     @Upsert
     suspend fun insertSubjectDetails(subject: List<SubjectEntity>)
-
     @Query("SELECT * FROM Subject_table")
     suspend fun getSubjectDetails(): List<SubjectItems>
+
+    @Upsert
+    suspend fun insertVideoImageDetails(videosImage: List<VideoImageEntity>)
+    @Query("SELECT * FROM VideoImage_table")
+    suspend fun getVideoImageDetails(): VideoResult?
 
 
 

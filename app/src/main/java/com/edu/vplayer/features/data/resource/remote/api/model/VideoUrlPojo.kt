@@ -1,7 +1,7 @@
 package com.edu.vplayer.features.data.resource.remote.api.model
 
 data class VideoUrlPojo(
-	val result: Result? = null,
+	val result: VideoResult? = null,
 	val success: Boolean? = null,
 	val abp: Boolean? = null,
 	val error: String? = null,
@@ -66,7 +66,7 @@ data class ReportsItem(
 	val mastery: String? = null
 )
 
-data class Result(
+data class VideoResult(
 	val completion: String? = null,
 	val photoUrl: String? = null,
 	val chapters: List<ChaptersItem?>? = null,

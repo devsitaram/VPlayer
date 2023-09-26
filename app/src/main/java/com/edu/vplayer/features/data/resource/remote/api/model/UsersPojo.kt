@@ -9,7 +9,7 @@ data class UsersPojo(
 	val unAuthorizedRequest: Boolean? = null
 )
 data class ResultItem(
-	val pendingBalance: Any? = null,
+	val pendingBalance: String? = null,
 	val isSchoolChatroomEnabled: Boolean? = null,
 	val role: String,
 	val isActive: Boolean? = null,

@@ -9,9 +9,6 @@ import com.edu.vplayer.features.data.resource.remote.api.model.UsersPojo
 
 interface SubjectRepository {
     suspend fun getSubjectDetails(): List<SubjectItems>
-
     suspend fun insertSubjectDetails(subjectItems: List<SubjectEntity>)
-
-
 
 }

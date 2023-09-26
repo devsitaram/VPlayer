@@ -5,14 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.edu.vplayer.features.data.common.ChaptersTypeConverter
 import com.edu.vplayer.features.data.common.SubjectTypeConverter
 
 @Database(
-    entities = [User::class, ProfileEntity::class, SubjectEntity::class],
-    version = 5,
+    entities = [User::class, ProfileEntity::class, SubjectEntity::class ,VideoImageEntity::class],
+    version = 6,
     exportSchema = false
 )
-@TypeConverters(SubjectTypeConverter::class)
+@TypeConverters(SubjectTypeConverter::class ,ChaptersTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun usersDao(): UserDao
 

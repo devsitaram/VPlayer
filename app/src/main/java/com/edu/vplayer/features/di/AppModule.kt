@@ -8,14 +8,17 @@ import com.edu.vplayer.features.data.resource.remote.api.ApiConstants
 import com.edu.vplayer.features.data.resource.remote.api.ApiService
 import com.edu.vplayer.features.data.repository_impl.SubjectRepositoryImpl
 import com.edu.vplayer.features.data.repository_impl.UserRepoImpl
+import com.edu.vplayer.features.data.repository_impl.VideoRepositoryImpl
 import com.edu.vplayer.features.data.repository_impl.VideoUrlRepositoryImpl
 import com.edu.vplayer.features.data.resource.local.AppDatabase
 import com.edu.vplayer.features.data.resource.local.AppDatabase.Companion.getInstance
 import com.edu.vplayer.features.data.resource.local.UserDao
+import com.edu.vplayer.features.data.resource.remote.api.ApiServicesVideo
 import com.edu.vplayer.features.domain.repository.ProfileRepository
 import com.edu.vplayer.features.domain.repository.RegisterUserRepository
 import com.edu.vplayer.features.domain.repository.SubjectRepository
 import com.edu.vplayer.features.domain.repository.UserRepository
+import com.edu.vplayer.features.domain.repository.VideoRepository
 import com.edu.vplayer.features.domain.repository.VideoUrlRepository
 import dagger.Module
 import dagger.Provides
@@ -33,7 +36,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-
     @Provides
     @Singleton
     fun provideDatabaseInstance(@ApplicationContext context: Context): UserDao {
@@ -43,29 +45,36 @@ object AppModule {
             "User_DB"
         ).fallbackToDestructiveMigration().build().usersDao()
     }
-
     @Provides
     @Singleton
     fun providesDao(userDao: UserDao): RegisterUserRepository {
         return RegisterUsersRepositoryImpl(userDao)
     }
 
-    //
     @Provides
     @Singleton
     fun provideRetrofit(): ApiService {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
         val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
-
         return Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
     }
-
+    @Provides
+    @Singleton
+    fun provideRetrofitVideo(): ApiServicesVideo {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+        return Retrofit.Builder()
+            .baseUrl(ApiConstants.VIDEO_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiServicesVideo::class.java)
+    }
     @Provides
     @Singleton
     fun provideUserApi(apiService: ApiService): UserRepository {
@@ -77,19 +86,21 @@ object AppModule {
     fun provideSubjectAPi(apiService: ApiService , userDao: UserDao): SubjectRepository {
         return SubjectRepositoryImpl(apiService ,userDao)
     }
-
-
     @Singleton
     @Provides
     fun provideProfileDetails(apiService: ApiService, userDao: UserDao): ProfileRepository {
         return ProfileRepositoryImpl(apiService, userDao)
     }
 
+    @Singleton
+    @Provides
+    fun provideVideoUrlApi(apiService: ApiService ,userDao: UserDao): VideoUrlRepository {
+        return VideoUrlRepositoryImpl(apiService ,userDao)
+    }
 
     @Singleton
     @Provides
-    fun provideVideoUrlApi(apiService: ApiService): VideoUrlRepository {
-        return VideoUrlRepositoryImpl(apiService)
+    fun provideVideoApi(apiServicesVideo: ApiServicesVideo ): VideoRepository {
+        return VideoRepositoryImpl(apiServicesVideo)
     }
-
 }

@@ -102,12 +102,12 @@ fun LoginViewScreen(
         isEmailEmpty = email.isEmpty()
         isPasswordEmpty = password.isEmpty()
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            if (isValidEmail(email)) {
+//            if (isValidEmail(email)) {
                 Toast.makeText(context, "Email is valid", Toast.LENGTH_SHORT).show()
                 Log.e("Email:", "Email is valid")
-            } else {
-                Toast.makeText(context, "Email is not valid", Toast.LENGTH_SHORT).show()
-            }
+//            } else {
+//                Toast.makeText(context, "Email is not valid", Toast.LENGTH_SHORT).show()
+//            }
             loginViewModel.getUsers(email, password)
             if (result.isData?.success == true) {
                 isSuccess = true
@@ -155,7 +155,6 @@ fun LoginViewScreen(
                     style = TextStyle(fontWeight = FontWeight.Bold, color = Color.Gray),
                     fontSize = 20.sp,
                 )
-
             }
             InputTextFieldView(
                 value = email,
@@ -207,7 +206,6 @@ fun LoginViewScreen(
             }
             ButtonView(
                 onClick = { onClick()
-//                    usersRepository.readAllUser
 
                           },
                 btnColor = ButtonDefaults.buttonColors(Color.Blue),

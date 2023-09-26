@@ -5,6 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.vplayer.features.data.common.Resource
+import com.edu.vplayer.features.data.resource.local.SubjectEntity
+import com.edu.vplayer.features.data.resource.local.VideoImageEntity
+import com.edu.vplayer.features.data.resource.remote.api.model.VideosItem
 import com.edu.vplayer.features.domain.usecase.VideoUrlUseCase
 import com.edu.vplayer.features.presentation.state.VideoUrlState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +20,6 @@ class VideoUrlViewModel @Inject constructor(private val videoUrlUseCase: VideoUr
     ViewModel() {
     private val _vUrl = mutableStateOf(VideoUrlState())
     val vUrl: State<VideoUrlState> get() = _vUrl
-
-//    init {
-//        getVideoUrlData()
-//    }
 
     fun getVideoUrlData(videoId: Int?) {
 
@@ -44,4 +43,8 @@ class VideoUrlViewModel @Inject constructor(private val videoUrlUseCase: VideoUr
         }.launchIn(viewModelScope)
     }
 
-}
+    fun insertVideoImageDetails(videosItem: List<VideoImageEntity>) {
+        videoUrlUseCase(videosItem).launchIn(viewModelScope)
+
+    }
+    }

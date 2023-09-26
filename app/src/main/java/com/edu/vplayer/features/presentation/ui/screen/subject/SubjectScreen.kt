@@ -148,8 +148,6 @@ fun SubjectCard(
     imageUrl: String,
     onClickAction: () -> Unit,
 ) {
-
-
     Card(
         modifier = Modifier
             .wrapContentWidth()

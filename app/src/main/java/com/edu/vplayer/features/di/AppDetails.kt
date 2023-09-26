@@ -4,12 +4,14 @@ import com.edu.vplayer.features.domain.repository.ProfileRepository
 import com.edu.vplayer.features.domain.repository.RegisterUserRepository
 import com.edu.vplayer.features.domain.repository.SubjectRepository
 import com.edu.vplayer.features.domain.repository.UserRepository
+import com.edu.vplayer.features.domain.repository.VideoRepository
 import com.edu.vplayer.features.domain.repository.VideoUrlRepository
 import com.edu.vplayer.features.domain.usecase.LoginUseCase
 import com.edu.vplayer.features.domain.usecase.ProfileUseCase
 import com.edu.vplayer.features.domain.usecase.RegisterUserUseCase
 import com.edu.vplayer.features.domain.usecase.SubjectUseCase
 import com.edu.vplayer.features.domain.usecase.VideoUrlUseCase
+import com.edu.vplayer.features.domain.usecase.VideoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,5 +47,11 @@ class AppDetails {
     @Provides
     fun provideVideoUrl(videoUrlRepository: VideoUrlRepository): VideoUrlUseCase {
         return VideoUrlUseCase(videoUrlRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideVideo(videoRepository: VideoRepository): VideoUseCase {
+        return VideoUseCase(videoRepository)
     }
 }

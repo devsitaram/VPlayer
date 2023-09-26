@@ -15,6 +15,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 fun VideoViewScreen(navController: NavHostController) {
 
     val context = LocalContext.current
+//    val url = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-ogv-file.ogv"
     val url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     val exoPlayer = ExoPlayer.Builder(context).build()
     val mediaItem = MediaItem.fromUri(Uri.parse(url))
