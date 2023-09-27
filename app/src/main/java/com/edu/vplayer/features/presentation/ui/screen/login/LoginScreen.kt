@@ -69,7 +69,6 @@ fun LoginViewScreen(
 ) {
     val context = LocalContext.current
     val getSharedPreferences = context.getSharedPreferences("my_preferences", ComponentActivity.MODE_PRIVATE)
-//    val usersRepository = UsersRepository(context)
     val result = loginViewModel.users.value
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -205,9 +204,7 @@ fun LoginViewScreen(
                 )
             }
             ButtonView(
-                onClick = { onClick()
-
-                          },
+                onClick = { onClick()},
                 btnColor = ButtonDefaults.buttonColors(Color.Blue),
                 text = "Login In",
                 textStyle = TextStyle(Color.White, fontWeight = FontWeight.Bold),

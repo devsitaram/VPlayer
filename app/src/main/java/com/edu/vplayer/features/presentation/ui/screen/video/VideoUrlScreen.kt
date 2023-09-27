@@ -1,5 +1,6 @@
 package com.edu.vplayer.features.presentation.ui.screen.video
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -45,9 +47,8 @@ fun VideoUrlViewScreen(
 ) {
     val context = LocalContext.current
     val videoUrlResult = videoUrlViewModel.vUrl.value
-
-
     LaunchedEffect(key1 = videoId) {
+        Toast.makeText(context,"Id: $videoId", Toast.LENGTH_SHORT).show()
         videoUrlViewModel.getVideoUrlData(videoId)
     }
     if (videoUrlResult.isLoading) {
@@ -61,14 +62,15 @@ fun VideoUrlViewScreen(
             TextView(text = videoUrlResult.isError, color = Color.Red)
         }
     }
-    TextView(text = subjectName.toString())
+    Row(modifier = Modifier.fillMaxWidth() , horizontalArrangement = Arrangement.Center) {
+        TextView(text = subjectName.toString() , color = Color.LightGray , fontSize = 16.sp)
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         videoUrlResult.isData?.chapters?.forEach { chaptersItem ->
             chaptersItem?.topics?.forEach { topicsItem ->
                 topicsItem?.videos?.forEach { videosItem ->
@@ -92,9 +94,7 @@ fun VideoUrlViewScreen(
                             onClickAction= {
                                 navController.navigate(ScreenList.VideoScreen.route)
                             }
-
                         )
-
                         LaunchedEffect(key1 = id, block = {
                             val listOfVideoImage = listOf(
                                 VideoImageEntity(
@@ -137,7 +137,9 @@ fun VideoUrlItems(
             .padding(top = 5.dp, bottom = 5.dp),
         verticalArrangement = Arrangement.Center,
     ) {
-        Box(modifier = Modifier.wrapContentSize().clickable { onClickAction() }, contentAlignment = Alignment.BottomCenter) {
+        Box(modifier = Modifier
+            .wrapContentSize()
+            .clickable { onClickAction() }, contentAlignment = Alignment.BottomCenter) {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = null,

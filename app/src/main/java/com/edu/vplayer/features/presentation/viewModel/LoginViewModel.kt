@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel  @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
-
     private val _users = mutableStateOf(UsersState())
     val users: State<UsersState> get() = _users
 
@@ -28,7 +27,6 @@ class LoginViewModel  @Inject constructor(private val loginUseCase: LoginUseCase
                 is Resource.Loading -> {
                     _users.value = UsersState(isLoading = true)
                 }
-
                 is Resource.Success -> {
                     _users.value = UsersState(isData = it.data)
                 }

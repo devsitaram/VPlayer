@@ -152,7 +152,6 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     //Gson Converter
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
     // exoplayer
     implementation ("com.google.android.exoplayer:exoplayer:2.19.1")
 

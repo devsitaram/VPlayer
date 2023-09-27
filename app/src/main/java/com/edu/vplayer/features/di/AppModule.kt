@@ -9,9 +9,9 @@ import com.edu.vplayer.features.data.resource.remote.api.ApiService
 import com.edu.vplayer.features.data.repository_impl.SubjectRepositoryImpl
 import com.edu.vplayer.features.data.repository_impl.UserRepoImpl
 import com.edu.vplayer.features.data.repository_impl.VideoRepositoryImpl
-import com.edu.vplayer.features.data.repository_impl.VideoUrlRepositoryImpl
+import com.edu.vplayer.features.data.repository_impl.VideoContentRepositoryImpl
+import com.edu.vplayer.features.data.repository_impl.VideoInfoRepositoryImpl
 import com.edu.vplayer.features.data.resource.local.AppDatabase
-import com.edu.vplayer.features.data.resource.local.AppDatabase.Companion.getInstance
 import com.edu.vplayer.features.data.resource.local.UserDao
 import com.edu.vplayer.features.data.resource.remote.api.ApiServicesVideo
 import com.edu.vplayer.features.domain.repository.ProfileRepository
@@ -19,7 +19,8 @@ import com.edu.vplayer.features.domain.repository.RegisterUserRepository
 import com.edu.vplayer.features.domain.repository.SubjectRepository
 import com.edu.vplayer.features.domain.repository.UserRepository
 import com.edu.vplayer.features.domain.repository.VideoRepository
-import com.edu.vplayer.features.domain.repository.VideoUrlRepository
+import com.edu.vplayer.features.domain.repository.VideoContentRepository
+import com.edu.vplayer.features.domain.repository.VideoInfoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,13 +51,14 @@ object AppModule {
     fun providesDao(userDao: UserDao): RegisterUserRepository {
         return RegisterUsersRepositoryImpl(userDao)
     }
-
     @Provides
     @Singleton
-    fun provideRetrofit(): ApiService {
+    fun provideRetrofit(@ApplicationContext context: Context): ApiService {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(ClientInterceptor(context))
+            .addInterceptor(httpLoggingInterceptor).build()
         return Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .client(okHttpClient)
@@ -91,11 +93,15 @@ object AppModule {
     fun provideProfileDetails(apiService: ApiService, userDao: UserDao): ProfileRepository {
         return ProfileRepositoryImpl(apiService, userDao)
     }
-
     @Singleton
     @Provides
-    fun provideVideoUrlApi(apiService: ApiService ,userDao: UserDao): VideoUrlRepository {
-        return VideoUrlRepositoryImpl(apiService ,userDao)
+    fun provideVideoUrlApi(apiService: ApiService ,userDao: UserDao): VideoContentRepository {
+        return VideoContentRepositoryImpl(apiService ,userDao)
+    }
+    @Singleton
+    @Provides
+    fun provideVideoDataApi(apiService: ApiService ): VideoInfoRepository {
+        return VideoInfoRepositoryImpl(apiService)
     }
 
     @Singleton
@@ -103,4 +109,6 @@ object AppModule {
     fun provideVideoApi(apiServicesVideo: ApiServicesVideo ): VideoRepository {
         return VideoRepositoryImpl(apiServicesVideo)
     }
+
+
 }

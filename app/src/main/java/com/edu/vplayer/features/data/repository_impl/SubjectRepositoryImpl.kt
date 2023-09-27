@@ -15,7 +15,8 @@ class SubjectRepositoryImpl(private val apiService: ApiService , private val use
             }
         } catch (e: Exception) {
             throw Exception(e)
-        } }
+        }
+    }
 
     override suspend fun insertSubjectDetails(subjectItems: List<SubjectEntity>) {
         try {

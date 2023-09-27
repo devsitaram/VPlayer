@@ -16,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // create the Shared Preferences
         val getSharedPreferences = getSharedPreferences("my_preferences", MODE_PRIVATE)
         val getUserDevice = getSharedPreferences.getString("login_screen", "")

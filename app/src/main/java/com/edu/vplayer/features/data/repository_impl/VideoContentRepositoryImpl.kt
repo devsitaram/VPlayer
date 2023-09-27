@@ -4,10 +4,10 @@ import com.edu.vplayer.features.data.resource.local.UserDao
 import com.edu.vplayer.features.data.resource.local.VideoImageEntity
 import com.edu.vplayer.features.data.resource.remote.api.ApiService
 import com.edu.vplayer.features.data.resource.remote.api.model.VideoResult
-import com.edu.vplayer.features.domain.repository.VideoUrlRepository
+import com.edu.vplayer.features.domain.repository.VideoContentRepository
 
-class VideoUrlRepositoryImpl(private val apiService: ApiService ,private  val userDao: UserDao) : VideoUrlRepository {
-    override suspend fun getVideoUrl(videoId: Int?): VideoResult? {
+class VideoContentRepositoryImpl(private val apiService: ApiService, private  val userDao: UserDao) : VideoContentRepository {
+    override suspend fun getVideoContent(videoId: Int?): VideoResult? {
         try {
              val getVideoImage = userDao.getVideoImageDetails()
             return if (getVideoImage?.id == null){

@@ -16,7 +16,6 @@ class SubjectTypeConverter {
     fun toStudentSubject(studentSubjectJson: String?): StudentSubject? {
         return studentSubjectJson?.let { Gson().fromJson(it, StudentSubject::class.java) }
     }
-
     // level
     @TypeConverter
     fun fromLevel(level: Level?): String? {
@@ -28,7 +27,6 @@ class SubjectTypeConverter {
         return levelJson?.let { Gson().fromJson(it, Level::class.java) }
     }
 
-    // Asset Type
     @TypeConverter
     fun fromAssetType(assetType: AssetType?): String? {
         return assetType?.let { Gson().toJson(it) }
